@@ -1,5 +1,3 @@
-export const helloJustCoreUi = 'hi-ts-webpack';
+export const helloJustCoreUi = 'hi-ts-webpack-exports-commonjs2';
 
-const a = 1;
-
-console.log('aaa', a);
+export { Button } from  './components/button';
