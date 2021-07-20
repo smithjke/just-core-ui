@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
-import { ThemeConfigContext } from '../common/theme-config-context';
+import { ThemeConfigContext } from '../../common/theme-config-context';
 
 export type ButtonProps = {
     children?: React.ReactNode;

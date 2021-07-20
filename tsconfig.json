@@ -4,7 +4,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "outDir": "./build",
+    "outDir": "./dist",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -26,8 +26,13 @@
     "resolveJsonModule": true,
     "jsx": "react"
   },
+  "include": [
+    "src/common",
+    "src/index.ts",
+    "src/components/index.ts"
+  ],
   "exclude": [
     "node_modules",
-    "build"
+    "dist"
   ]
 }
