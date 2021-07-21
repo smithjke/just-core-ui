@@ -10,6 +10,7 @@ export type InputProps = {
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     type?: string;
     disabled?: boolean;
+    bottom?: React.ReactNode;
     darkMode?: boolean;
 };
 
@@ -56,13 +57,13 @@ export function Input(props: InputProps): JSX.Element {
                 onChange={props.onChange}
                 disabled={props.disabled}
             />
-            <Space h={'xs'}/>
+            <Space h={'m'}/>
             <Text
                 size={'s'}
                 height={'s'}
                 colorStep={0}
             >
-                &nbsp;
+                {props.bottom || (<>&nbsp;</>)}
             </Text>
             <Space h={'xs'}/>
         </div>
