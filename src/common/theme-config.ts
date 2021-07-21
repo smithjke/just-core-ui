@@ -23,6 +23,6 @@ export class ThemeConfig {
     }
 
     getParamColor(name: string): string {
-        return this.color[this.param[name]];
+        return this.color[this.getParam(name)];
     }
 }

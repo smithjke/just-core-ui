@@ -1,11 +1,11 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import { createDefaultThemeConfig } from '../../common/create-default-theme-config';
+import { createDefaultThemeConfig } from '../../common';
 import { Theme } from '../../components/theme';
 import { Button, ButtonProps } from './button';
 
 export default {
-    title: 'Example/Button',
+    title: 'Main/Button',
     component: Button,
     argTypes: {
         backgroundColor: { control: 'color' },
@@ -22,23 +22,20 @@ const Template: Story<ButtonProps> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-    primary: true,
-    label: 'Button1',
+    children: 'Button1',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-    label: 'Button2',
+    children: 'Button2',
 };
 
 export const Large = Template.bind({});
 Large.args = {
-    size: 'large',
-    label: 'Button3',
+    children: 'Button3',
 };
 
 export const Small = Template.bind({});
 Small.args = {
-    size: 'small',
-    label: 'Button4',
+    children: 'Button4',
 };

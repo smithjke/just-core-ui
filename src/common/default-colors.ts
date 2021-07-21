@@ -1,4 +1,6 @@
 export const DefaultColors = {
+    LIGHT: '#FFFFFF',
+    DARK: '#222222',
     BLUE: '#0C48F3',
     SKY: '#4CA8EF',
     LIGHT_BLUE: '#9EC3E7',

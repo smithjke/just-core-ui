@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "target": "esnext",
     "removeComments": false,
     "noImplicitAny": false,

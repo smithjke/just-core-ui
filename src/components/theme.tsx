@@ -1,6 +1,5 @@
 import React from 'react';
-import { ThemeConfig } from '../common/theme-config';
-import { ThemeConfigContext } from '../common/theme-config-context';
+import { ThemeConfig, ThemeConfigContext } from '../common';
 
 export type ThemeProps = {
     children: React.ReactNode;
