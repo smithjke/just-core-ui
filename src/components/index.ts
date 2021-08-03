@@ -5,6 +5,7 @@ export * from './cell';
 export * from './gapper';
 export * from './input';
 export * from './link';
+export * from './loader';
 export * from './space';
 export * from './text';
 export * from './theme';

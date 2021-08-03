@@ -95,6 +95,11 @@ export type TextProps = {
     tag?: 'div' | 'span';
 
     /**
+     * Выравнивание текста
+     */
+    align?: 'left' | 'center' | 'right';
+
+    /**
      * Дочерний элемент
      */
     children?: React.ReactNode;
@@ -112,6 +117,7 @@ const useStyles = createUseStyles({
         fontSize: (props: TextProps) => FontSizeDesktop[props.size],
         fontWeight: (props: TextProps) => FontWeightBase[props.weight],
         lineHeight: (props: TextProps) => LineHeightBase[props.height],
+        textAlign: (props: TextProps) => props.align,
         color: (props: TextProps) => props.disableColor ? null : colorize(props.color, props.colorStep, !props.forceColorStep && props.darkMode),
         '@media (max-width: 400px)': {
             fontSize: (props: TextProps) => FontSizeMobile[props.size],
@@ -130,6 +136,7 @@ export function Text(props: TextProps): JSX.Element {
         color = midColor(),
         colorStep = -6,
         tag = 'div',
+        align = 'left',
         children,
     } = props;
 
@@ -141,6 +148,7 @@ export function Text(props: TextProps): JSX.Element {
         darkMode,
         color,
         colorStep,
+        align,
     });
 
     return React.createElement(tag, {
