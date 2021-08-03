@@ -1,1 +1,2 @@
-export const justCoreUi = 'Just Core UI';
+export * from './common';
+export * from './components';

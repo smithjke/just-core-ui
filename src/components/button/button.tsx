@@ -86,6 +86,8 @@ const size2params: Record<ButtonPropsSize, ButtonParam> = {
 
 const useStyles = createUseStyles({
     Button: (props: ButtonProps) => ({
+        display: 'flex',
+        justifyContent: 'center',
         position: 'relative',
         backgroundColor: props.backgroundColor,
         border: 'none',

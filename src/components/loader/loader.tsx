@@ -24,7 +24,19 @@ const useStyles = createUseStyles({
             'stroke-dashoffset': '0',
         },
         '100%': {
+            transform: 'rotate(630deg)',
+        },
+    },
+    '@keyframes circleAnimation2': {
+        '0%': {
+            transform: 'rotate(-90deg)',
+        },
+        '50%': {
             transform: 'rotate(270deg)',
+            'stroke-dashoffset': '0',
+        },
+        '100%': {
+            transform: 'rotate(990deg)',
         },
     },
     ProgressRing: {},
@@ -35,7 +47,7 @@ const useStyles = createUseStyles({
         // axis compensation
         // transform: 'rotate(-90deg)',
         'transform-origin': '50% 50%',
-        animation: '$circleAnimation 2s infinite ease',
+        animation: '$circleAnimation2 2s infinite ease',
     }),
 });
 
