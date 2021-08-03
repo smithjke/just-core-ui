@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
 import { colorize, DarkModeContext, spaceCode2pixel, radius2pixel, midColor, ThemeConfigContext } from '../../common';
 import { FontSize, Text } from '../text';
+import { Loader } from '../loader';
 
 export type ButtonPropsType = 'primary' | 'secondary';
 
@@ -27,6 +28,11 @@ export type ButtonProps = {
      * Заблокирована ли кнопка
      */
     disabled?: boolean;
+
+    /**
+     * Кнопка в состоянии загрузки
+     */
+    loading?: boolean;
 
     /**
      * Заполнять ли все пространство
@@ -80,6 +86,7 @@ const size2params: Record<ButtonPropsSize, ButtonParam> = {
 
 const useStyles = createUseStyles({
     Button: (props: ButtonProps) => ({
+        position: 'relative',
         backgroundColor: props.backgroundColor,
         border: 'none',
         margin: 0,
@@ -95,6 +102,19 @@ const useStyles = createUseStyles({
             backgroundColor: colorize(props.backgroundColor, -1, props.darkMode),
         }
     }),
+    Button__Text: {
+        opacity: (props: ButtonProps) => props.loading ? 0 : 1,
+    },
+    Button__Loader: {
+        display: (props: ButtonProps) => props.loading ? 'block' : 'none',
+        position: 'absolute',
+        width: 20,
+        height: 20,
+        marginTop: -10,
+        marginLeft: -10,
+        top: '50%',
+        left: '50%',
+    },
 });
 
 export function Button(props: ButtonProps): JSX.Element {
@@ -118,23 +138,28 @@ export function Button(props: ButtonProps): JSX.Element {
         backgroundColor,
     });
 
-    const onClick = () => !props.disabled && props.onClick && props.onClick();
+    const onClick = () => !props.disabled && !props.loading && props.onClick && props.onClick();
 
     return (
         <button
             className={styles.Button}
             onClick={onClick}
         >
-            <Text
-                size={size2params[size].textSize}
-                weight={'medium'}
-                height={'s'}
-                colorStep={8}
-                darkMode={props.darkMode}
-                forceColorStep
-            >
-                {props.children}
-            </Text>
+            <div className={styles.Button__Loader}>
+                <Loader size={20} color={colorize(midColor(), 8)}/>
+            </div>
+            <div className={styles.Button__Text}>
+                <Text
+                    size={size2params[size].textSize}
+                    weight={'medium'}
+                    height={'s'}
+                    colorStep={8}
+                    darkMode={props.darkMode}
+                    forceColorStep
+                >
+                    {props.children}
+                </Text>
+            </div>
         </button>
     );
 }
