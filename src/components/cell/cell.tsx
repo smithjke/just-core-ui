@@ -1,6 +1,9 @@
 import React from 'react';
-import { SpaceCode, spaceCode2pixel } from '../../common';
+import { SpaceCode } from '../../common';
+import { getThemeConfig } from '../../utils/get-theme-config';
 import { createUseStyles } from 'react-jss';
+
+const tc = getThemeConfig();
 
 export type CellProps = {
     spaceCode?: SpaceCode;
@@ -10,8 +13,8 @@ export type CellProps = {
 
 const useStyles = createUseStyles({
     Cell: (props: CellProps) => ({
-        paddingTop: props.spaceCode ? spaceCode2pixel[props.spaceCode] : 0,
-        paddingBottom: props.spaceCode ? spaceCode2pixel[props.spaceCode] : 0,
+        paddingTop: props.spaceCode ? tc.getSpace(props.spaceCode) : 0,
+        paddingBottom: props.spaceCode ? tc.getSpace(props.spaceCode) : 0,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -7,7 +7,7 @@ const parseColor = (color: string): [number, number, number] => {
     return [r, g, b];
 };
 
-const calculateColor = (from: string, to: string, step: number): string => {
+export const calculateColor = (from: string, to: string, step: number): string => {
     const fromColor = parseColor(from);
     const toColor = parseColor(to);
     const resultColor = fromColor.map((n, index) => Math.floor(n + (toColor[index] - n) * step));
@@ -15,10 +15,10 @@ const calculateColor = (from: string, to: string, step: number): string => {
     return `#${resultColor.map(n => n.toString(16).padStart(2, '0')).join('')}`.toUpperCase();
 };
 
-const calculateMidColor = (from: string, to: string): string => calculateColor(from, to, 0.5);
-
-const step2percent = (step: number) => {
+export const step2percent = (step: number) => {
     switch (Math.abs(step)) {
+        case 0:
+            return 0;
         case 1:
             return 0.125;
         case 2:
@@ -35,37 +35,7 @@ const step2percent = (step: number) => {
             return 0.875;
         case 8:
             return 1;
-        case 0:
-        default:
-            return 0;
     }
-};
 
-const invertDark = (darkMode: boolean, step: number) => step < 0 ? !darkMode : darkMode;
-
-export const colorize = (color: string, step: number, darkMode?: boolean) => {
-    const theme = {
-        color: {
-            LIGHT: '#FFFFFF',
-            DARK: '#222222',
-        },
-    };
-
-    const to = invertDark(darkMode, step) ? theme.color['DARK'] : theme.color['LIGHT'];
-
-    return calculateColor(color, to, step2percent(step));
-};
-
-export const opacity = (color: string, opacity: number): string =>
-    `rgba(${parseColor(color).join(', ')}, ${opacity})`;
-
-export const midColor = () => {
-    const theme = {
-        color: {
-            LIGHT: '#FFFFFF',
-            DARK: '#222222',
-        },
-    };
-
-    return calculateMidColor(theme.color['LIGHT'], theme.color['DARK']);
+    return 0;
 };

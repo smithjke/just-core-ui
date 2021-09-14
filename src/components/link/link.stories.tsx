@@ -1,7 +1,5 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { createDefaultThemeConfig } from '../../common';
-import { Theme } from '../theme';
 import { Link, LinkProps } from './link';
 
 export default {
@@ -9,12 +7,8 @@ export default {
     component: Link,
 } as Meta;
 
-const themeConfig = createDefaultThemeConfig();
-
 const Template: Story<LinkProps> = (args) => (
-    <Theme config={themeConfig}>
-        <Link {...args}/>
-    </Theme>
+    <Link {...args}/>
 );
 
 export const Primary = Template.bind({});

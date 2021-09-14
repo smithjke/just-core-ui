@@ -1,8 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { colorize, DarkModeContext, spaceCode2pixel, radius2pixel, midColor, ThemeConfigContext } from '../../common';
+import { getThemeConfig } from '../../utils/get-theme-config';
+import { useDarkMode } from '../../hooks/use-dark-mode';
 import { FontSize, Text } from '../text';
 import { Loader } from '../loader';
+
+const tc = getThemeConfig();
 
 export type ButtonPropsType = 'primary' | 'secondary';
 
@@ -68,18 +71,18 @@ type ButtonParam = {
 
 const size2params: Record<ButtonPropsSize, ButtonParam> = {
     's': {
-        padding: `7px ${spaceCode2pixel['xs']}px`,
-        borderRadius: radius2pixel['s'],
+        padding: `7px ${tc.getSpace('xs')}px`,
+        borderRadius: tc.getRadius('s'),
         textSize: 's',
     },
     'm': {
-        padding: `${spaceCode2pixel['xs']}px ${spaceCode2pixel['m']}px`,
-        borderRadius: radius2pixel['s'],
+        padding: `${tc.getSpace('xs')}px ${tc.getSpace('m')}px`,
+        borderRadius: tc.getRadius('s'),
         textSize: 'm',
     },
     'l': {
-        padding: `${spaceCode2pixel['s']}px ${spaceCode2pixel['l']}px`,
-        borderRadius: radius2pixel['m'],
+        padding: `${tc.getSpace('s')}px ${tc.getSpace('l')}px`,
+        borderRadius: tc.getRadius('m'),
         textSize: 'm',
     },
 };
@@ -99,9 +102,9 @@ const useStyles = createUseStyles({
         width: props.autoFill ? '100%' : void 0,
         outline: 0,
         '&:hover': props.disabled ? {
-            backgroundColor: colorize(midColor(), 4, props.darkMode),
+            backgroundColor: tc.getMidColor({ step: 4, darkMode: props.darkMode }),
         } : {
-            backgroundColor: colorize(props.backgroundColor, -1, props.darkMode),
+            backgroundColor: tc.getRawColor(props.backgroundColor, { step: -1, darkMode: props.darkMode }),
         }
     }),
     Button__Text: {
@@ -120,17 +123,16 @@ const useStyles = createUseStyles({
 });
 
 export function Button(props: ButtonProps): JSX.Element {
-    const theme = useContext(ThemeConfigContext);
+    const darkMode = useDarkMode(props);
 
     const {
         size = 'm',
         type = 'primary',
-        darkMode = useContext(DarkModeContext),
     } = props;
 
     const backgroundColor = props.disabled
-        ? colorize(midColor(), 4, darkMode)
-        : colorize(theme.color[theme.param[type2paramName[type]]], 0, darkMode);
+        ? tc.getMidColor({ step: 4, darkMode })
+        : tc.getParamColor(type2paramName[type], { step: 0, darkMode })
 
     const styles = useStyles({
         ...props,
@@ -148,7 +150,7 @@ export function Button(props: ButtonProps): JSX.Element {
             onClick={onClick}
         >
             <div className={styles.Button__Loader}>
-                <Loader size={20} color={colorize(midColor(), 8)}/>
+                <Loader size={20} color={tc.getParamColor('LIGHT')}/>
             </div>
             <div className={styles.Button__Text}>
                 <Text

@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { colorize, spaceCode2pixel, ThemeConfigContext } from '../../common';
+import { getThemeConfig } from '../../utils/get-theme-config';
 import { Cell } from '../cell';
 import { Text } from '../text';
+
+const tc = getThemeConfig();
 
 const SIZE = 20;
 
@@ -20,14 +22,13 @@ const useStyles = createUseStyles({
         height: SIZE,
         display: 'flex',
         alignItems: 'center',
-        gap: spaceCode2pixel['s'],
+        gap: tc.getSpace('s'),
     },
 });
 
 export function BlockLink(props: BlockLinkProps): JSX.Element {
-    const theme = useContext(ThemeConfigContext);
-    const primaryColor = theme.getParamColor('BUTTON_PRIMARY_COLOR');
-    const primaryColorHovered = colorize(primaryColor, -3);
+    const primaryColor = tc.getParamColor('BUTTON_PRIMARY_COLOR');
+    const primaryColorHovered = tc.getRawColor(primaryColor, { step: -3 });
 
     const [color, setColor] = useState(primaryColor);
     const styles = useStyles();

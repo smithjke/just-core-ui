@@ -1,8 +1,11 @@
-import React, { ChangeEvent, useContext } from 'react';
+import React, { ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
-import { colorize, DarkModeContext, midColor, radius2pixel, ThemeConfigContext } from '../../common';
+import { useDarkMode } from '../../hooks/use-dark-mode';
+import { getThemeConfig } from '../../utils/get-theme-config';
 import { Space } from '../space';
 import { Text } from '../text';
+
+const tc = getThemeConfig();
 
 export type InputProps = {
     title: string;
@@ -17,8 +20,8 @@ export type InputProps = {
 const useStyles = createUseStyles({
     Input: {},
     Input__Input: {
-        border: (props: InputProps) => `1px solid ${colorize(midColor(), 5, props.darkMode)}`,
-        borderRadius: radius2pixel['s'],
+        border: (props: InputProps) => `1px solid ${tc.getMidColor({ step: 5, darkMode: props.darkMode })}`,
+        borderRadius: tc.getRadius('s'),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',
@@ -26,17 +29,15 @@ const useStyles = createUseStyles({
 });
 
 export function Input(props: InputProps): JSX.Element {
-    const theme = useContext(ThemeConfigContext);
+    const darkMode = useDarkMode(props);
 
     const {
         type = 'text',
-        darkMode = useContext(DarkModeContext),
     } = props;
 
     const styles = useStyles({
         ...props,
         darkMode,
-        theme,
     });
 
     return (

@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { colorize, midColor, DarkModeContext } from '../../common';
+import { getThemeConfig } from '../../utils/get-theme-config';
+import { useDarkMode } from '../../hooks/use-dark-mode';
+
+const tc = getThemeConfig();
 
 // FONT SIZE
 
@@ -118,7 +121,12 @@ const useStyles = createUseStyles({
         fontWeight: (props: TextProps) => FontWeightBase[props.weight],
         lineHeight: (props: TextProps) => LineHeightBase[props.height],
         textAlign: (props: TextProps) => props.align,
-        color: (props: TextProps) => props.disableColor ? null : colorize(props.color, props.colorStep, !props.forceColorStep && props.darkMode),
+        color: (props: TextProps) => props.disableColor
+            ? null
+            : tc.getRawColor(props.color, {
+                step: props.colorStep,
+                darkMode: !props.forceColorStep && props.darkMode,
+            }),
         '@media (max-width: 400px)': {
             fontSize: (props: TextProps) => FontSizeMobile[props.size],
         },
@@ -126,14 +134,13 @@ const useStyles = createUseStyles({
 });
 
 export function Text(props: TextProps): JSX.Element {
-    const dm = useContext(DarkModeContext);
+    const darkMode = useDarkMode(props);
 
     const {
         size = 'm',
         height = 'm',
         weight = 'regular',
-        darkMode = dm,
-        color = midColor(),
+        color = tc.getMidColor(),
         colorStep = -6,
         tag = 'div',
         align = 'left',

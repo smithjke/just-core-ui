@@ -1,7 +1,5 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import { createDefaultThemeConfig } from '../../common';
-import { Theme } from '../../components/theme';
 import { Button, ButtonProps } from './button';
 
 export default {
@@ -12,12 +10,8 @@ export default {
     },
 } as Meta;
 
-const themeConfig = createDefaultThemeConfig();
-
 const Template: Story<ButtonProps> = (args) => (
-    <Theme config={themeConfig}>
-        <Button {...args}/>
-    </Theme>
+    <Button {...args}/>
 );
 
 export const Primary = Template.bind({});

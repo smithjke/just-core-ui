@@ -8,4 +8,3 @@ export * from './link';
 export * from './loader';
 export * from './space';
 export * from './text';
-export * from './theme';

@@ -1,6 +1,9 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { midColor, radius2pixel } from '../../common';
+import { RadiusCode } from '../../common';
+import { getThemeConfig } from '../../utils/get-theme-config';
+
+const tc = getThemeConfig();
 
 export type AvatarPropsSize = 's' | 'm' | 'l' | 'xl' | '2xl';
 
@@ -12,8 +15,6 @@ export const AvatarPropsSizePixel: Record<AvatarPropsSize, number> = {
     '2xl': 64,
 };
 
-export type AvatarPropsBorderRadius = 's' | 'm' | 'l' | 'round';
-
 export type AvatarProps = {
     /**
      * Размер аватара
@@ -23,7 +24,7 @@ export type AvatarProps = {
     /**
      * Радиус аватара
      */
-    borderRadius?: AvatarPropsBorderRadius;
+    borderRadius?: RadiusCode;
 
     /**
      * Цвет фона
@@ -36,13 +37,19 @@ export type AvatarProps = {
     children?: React.ReactNode;
 };
 
-const b2p = (br: AvatarPropsBorderRadius, size: number) => br ? radius2pixel[br] || size : null;
+function b2p(size: AvatarPropsSize, br?: RadiusCode): number {
+    if (br) {
+        return tc.getRadius(br);
+    }
+
+    return AvatarPropsSizePixel[size];
+}
 
 const useStyles = createUseStyles({
     Avatar: (props: AvatarProps) => ({
         width: AvatarPropsSizePixel[props.size],
         height: AvatarPropsSizePixel[props.size],
-        borderRadius: b2p(props.borderRadius, AvatarPropsSizePixel[props.size]),
+        borderRadius: b2p(props.size, props.borderRadius),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -52,7 +59,7 @@ const useStyles = createUseStyles({
 
 export function Avatar(props: AvatarProps): JSX.Element {
     const {
-        color = midColor(),
+        color = tc.getMidColor({ step: 4 }),
     } = props;
 
     const styles = useStyles({

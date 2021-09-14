@@ -1,7 +1,5 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { createDefaultThemeConfig } from '../../common';
-import { Theme } from '../theme';
 import { Text, TextProps } from './text';
 
 export default {
@@ -9,12 +7,8 @@ export default {
     component: Text,
 } as Meta;
 
-const themeConfig = createDefaultThemeConfig();
-
 const Template: Story<TextProps> = (args) => (
-    <Theme config={themeConfig}>
-        <Text {...args}/>
-    </Theme>
+    <Text {...args}/>
 );
 
 export const Primary = Template.bind({});

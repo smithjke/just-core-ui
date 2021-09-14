@@ -1,7 +1,5 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { createDefaultThemeConfig } from '../../common';
-import { Theme } from '../theme';
 import { Loader, LoaderProps } from './loader';
 
 export default {
@@ -9,12 +7,8 @@ export default {
     component: Loader,
 } as Meta;
 
-const themeConfig = createDefaultThemeConfig();
-
 const Template: Story<LoaderProps> = (args) => (
-    <Theme config={themeConfig}>
-        <Loader {...args}/>
-    </Theme>
+    <Loader {...args}/>
 );
 
 export const Primary = Template.bind({});

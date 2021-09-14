@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { colorize, DarkModeContext, ThemeConfigContext } from '../../common';
+import { useDarkMode } from '../../hooks/use-dark-mode';
+import { getThemeConfig } from '../../utils/get-theme-config';
+
+const tc = getThemeConfig();
 
 export type LinkProps = {
     /**
@@ -21,33 +24,20 @@ export type LinkProps = {
 
 const useStyles = createUseStyles({
     Link: {
-        color: (props: LinkProps) => colorize(
-            props['theme'].getParamColor('PRIMARY_COLOR'),
-            0,
-            props.darkMode,
-        ),
+        color: (props: LinkProps) => tc.getParamColor('PRIMARY_COLOR', { darkMode: props.darkMode }),
         cursor: 'pointer',
         '&:hover': {
-            color: (props: LinkProps) => colorize(
-                props['theme'].getParamColor('PRIMARY_COLOR'),
-                -2,
-                props.darkMode,
-            ),
+            color: (props: LinkProps) => tc.getParamColor('PRIMARY_COLOR', { step: -2, darkMode: props.darkMode }),
         },
     },
 })
 
 export function Link(props: LinkProps): JSX.Element {
-    const theme = useContext(ThemeConfigContext);
-
-    const {
-        darkMode = useContext(DarkModeContext),
-    } = props;
+    const darkMode = useDarkMode(props);
 
     const styles = useStyles({
         ...props,
         darkMode,
-        theme,
     });
 
     return (
