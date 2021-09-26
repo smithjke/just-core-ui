@@ -1,17 +1,18 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Link, LinkProps } from './link';
+import { Link as Cmp, LinkProps } from './link';
 
 export default {
-    title: 'Main/Link',
-    component: Link,
+    title: 'A/Link',
+    component: Cmp,
 } as Meta;
 
 const Template: Story<LinkProps> = (args) => (
-    <Link {...args}/>
+    <Cmp {...args}/>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Link = Template.bind({});
+
+Link.args = {
     children: 'Zdarova posony',
 };

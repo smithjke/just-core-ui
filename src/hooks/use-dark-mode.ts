@@ -1,6 +1,14 @@
 import { useContext } from 'react';
 import { DarkModeContext } from '../common';
 
-export const useDarkMode = ({ darkMode }: { darkMode?: boolean }): boolean => typeof darkMode === 'undefined'
-    ? useContext(DarkModeContext)
-    : Boolean(darkMode);
+export interface DarkModeParams {
+    darkMode?: boolean;
+}
+
+export const useDarkMode = ({ darkMode }: DarkModeParams): boolean => {
+    const darkModeContext = useContext(DarkModeContext);
+
+    return typeof darkMode === 'undefined'
+        ? darkModeContext
+        : Boolean(darkMode);
+}

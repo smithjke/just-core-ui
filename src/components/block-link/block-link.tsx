@@ -7,6 +7,8 @@ import { Text } from '../text';
 const tc = getThemeConfig();
 
 const SIZE = 20;
+const PRIMARY_COLOR = tc.getParamColor('BUTTON_PRIMARY_COLOR');
+const PRIMARY_COLOR_HOVERED = tc.getRawColor(PRIMARY_COLOR, { step: -3 });
 
 export type BlockLinkProps = {
     onClick?: () => void;
@@ -27,37 +29,33 @@ const useStyles = createUseStyles({
 });
 
 export function BlockLink(props: BlockLinkProps): JSX.Element {
-    const primaryColor = tc.getParamColor('BUTTON_PRIMARY_COLOR');
-    const primaryColorHovered = tc.getRawColor(primaryColor, { step: -3 });
-
-    const [color, setColor] = useState(primaryColor);
+    const [color, setColor] = useState(PRIMARY_COLOR);
     const styles = useStyles();
+
+    const icon = Boolean(props.icon) && React.createElement(props.icon, {
+        color,
+        size: SIZE,
+    });
 
     return (
         <div
             className={styles.BlockLink}
             onClick={props.onClick}
-            onMouseEnter={() => setColor(primaryColorHovered)}
-            onMouseLeave={() => setColor(primaryColor)}
+            onMouseEnter={() => setColor(PRIMARY_COLOR_HOVERED)}
+            onMouseLeave={() => setColor(PRIMARY_COLOR)}
         >
-            <Cell
-                spaceCode={'xs'}
-                left={[(
-                    <div className={styles.BlockLink__Container}>
-                        {Boolean(props.icon) && React.createElement(props.icon, {
-                            color,
-                            size: SIZE,
-                        })}
-                        <Text
-                            height={'s'}
-                            color={color}
-                            colorStep={0}
-                        >
-                            {props.children}
-                        </Text>
-                    </div>
-                )]}
-            />
+            <Cell paddingY={'xs'}>
+                <div className={styles.BlockLink__Container}>
+                    {icon}
+                    <Text
+                        height={'s'}
+                        color={color}
+                        colorStep={0}
+                    >
+                        {props.children}
+                    </Text>
+                </div>
+            </Cell>
         </div>
     );
 }

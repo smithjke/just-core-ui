@@ -11,7 +11,7 @@ export type InputProps = {
     title: string;
     value: string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-    type?: string;
+    type?: 'text' | 'password';
     disabled?: boolean;
     bottom?: React.ReactNode;
     darkMode?: boolean;

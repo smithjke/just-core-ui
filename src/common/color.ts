@@ -15,7 +15,7 @@ export const calculateColor = (from: string, to: string, step: number): string =
     return `#${resultColor.map(n => n.toString(16).padStart(2, '0')).join('')}`.toUpperCase();
 };
 
-export const step2percent = (step: number) => {
+export const step2percent = (step: number): number => {
     switch (Math.abs(step)) {
         case 0:
             return 0;

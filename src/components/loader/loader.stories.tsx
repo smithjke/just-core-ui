@@ -1,17 +1,18 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Loader, LoaderProps } from './loader';
+import { Loader as Cmp, LoaderProps } from './loader';
 
 export default {
-    title: 'Main/Loader',
-    component: Loader,
+    title: 'A/Loader',
+    component: Cmp,
 } as Meta;
 
 const Template: Story<LoaderProps> = (args) => (
-    <Loader {...args}/>
+    <Cmp {...args}/>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Loader = Template.bind({});
+
+Loader.args = {
     size: 164,
 };

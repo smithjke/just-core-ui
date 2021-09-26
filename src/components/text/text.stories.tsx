@@ -1,17 +1,18 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Text, TextProps } from './text';
+import { Text as Cmp, TextProps } from './text';
 
 export default {
-    title: 'Main/Text',
-    component: Text,
+    title: 'A/Text',
+    component: Cmp,
 } as Meta;
 
 const Template: Story<TextProps> = (args) => (
-    <Text {...args}/>
+    <Cmp {...args}/>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Text = Template.bind({});
+
+Text.args = {
     children: 'Zdarova posony',
 };

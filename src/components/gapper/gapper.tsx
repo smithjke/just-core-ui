@@ -9,6 +9,7 @@ export type GapperProps = {
 
 export function Gapper(props: GapperProps): JSX.Element {
     const list = Array.isArray(props.children) ? props.children : [props.children];
+
     return (
         <>
             {list.filter(Boolean).map((node, index) => (

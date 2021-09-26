@@ -1,6 +1,6 @@
 import { calculateColor, step2percent } from './color';
-import { radius2pixel, RadiusCode } from './radius';
-import { SpaceCode, spaceCode2pixel } from './space';
+import { RadiusCode } from './radius';
+import { SpaceCode } from './space';
 
 export type ThemeConfigColorProps = {
     step?: number;
@@ -9,11 +9,11 @@ export type ThemeConfigColorProps = {
 
 export class ThemeConfig {
     private readonly color: Record<string, string>;
-    private readonly param: Record<string, string>;
+    private readonly param: Record<string, any>;
 
     constructor(
         color: Record<string, string>,
-        param: Record<string, string>,
+        param: Record<string, any>,
     ) {
         this.color = color;
         this.param = param;
@@ -65,7 +65,7 @@ export class ThemeConfig {
         );
     }
 
-    getParam(name: string): string {
+    getParam(name: string): any {
         return this.param[name];
     }
 
@@ -74,10 +74,10 @@ export class ThemeConfig {
     }
 
     getRadius(code: RadiusCode): number {
-        return radius2pixel[code];
+        return this.getParam('RADIUS')[code];
     }
 
     getSpace(code: SpaceCode): number {
-        return spaceCode2pixel[code];
+        return this.getParam('SPACE')[code];
     }
 }

@@ -128,11 +128,10 @@ export function Button(props: ButtonProps): JSX.Element {
     const {
         size = 'm',
         type = 'primary',
+        backgroundColor = props.disabled
+            ? tc.getMidColor({ step: 4, darkMode })
+            : tc.getParamColor(type2paramName[type], { step: 0, darkMode }),
     } = props;
-
-    const backgroundColor = props.disabled
-        ? tc.getMidColor({ step: 4, darkMode })
-        : tc.getParamColor(type2paramName[type], { step: 0, darkMode })
 
     const styles = useStyles({
         ...props,
@@ -150,7 +149,7 @@ export function Button(props: ButtonProps): JSX.Element {
             onClick={onClick}
         >
             <div className={styles.Button__Loader}>
-                <Loader size={20} color={tc.getParamColor('LIGHT')}/>
+                <Loader size={20} color={tc.getColor('LIGHT')}/>
             </div>
             <div className={styles.Button__Text}>
                 <Text

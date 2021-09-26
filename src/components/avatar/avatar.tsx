@@ -5,14 +5,14 @@ import { getThemeConfig } from '../../utils/get-theme-config';
 
 const tc = getThemeConfig();
 
-export type AvatarPropsSize = 's' | 'm' | 'l' | 'xl' | '2xl';
+export type AvatarPropsSize = 'xs' | 's' | 'm' | 'l' | 'xl';
 
 export const AvatarPropsSizePixel: Record<AvatarPropsSize, number> = {
-    's': 28,
-    'm': 32,
-    'l': 40,
-    'xl': 56,
-    '2xl': 64,
+    'xs': 28,
+    's': 32,
+    'm': 40,
+    'l': 56,
+    'xl': 64,
 };
 
 export type AvatarProps = {
@@ -46,15 +46,15 @@ function b2p(size: AvatarPropsSize, br?: RadiusCode): number {
 }
 
 const useStyles = createUseStyles({
-    Avatar: (props: AvatarProps) => ({
-        width: AvatarPropsSizePixel[props.size],
-        height: AvatarPropsSizePixel[props.size],
-        borderRadius: b2p(props.size, props.borderRadius),
+    Avatar: {
+        width: ({ size }: AvatarProps) => AvatarPropsSizePixel[size],
+        height: ({ size }: AvatarProps) => AvatarPropsSizePixel[size],
+        borderRadius: ({ size, borderRadius }: AvatarProps) => b2p(size, borderRadius),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: props.color,
-    }),
+        backgroundColor: ({ color }: AvatarProps) => color,
+    },
 });
 
 export function Avatar(props: AvatarProps): JSX.Element {

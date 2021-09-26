@@ -2,6 +2,7 @@ export * from './avatar';
 export * from './block-link';
 export * from './button';
 export * from './cell';
+export * from './container';
 export * from './gapper';
 export * from './input';
 export * from './link';
