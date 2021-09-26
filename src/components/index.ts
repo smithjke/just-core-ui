@@ -3,6 +3,7 @@ export * from './block-link';
 export * from './button';
 export * from './cell';
 export * from './container';
+export * from './dark-mode-provider';
 export * from './gapper';
 export * from './input';
 export * from './link';

@@ -1,3 +1,11 @@
 import React from 'react';
 
-export const DarkModeContext = React.createContext<boolean>(false);
+export type DarkModeState = {
+    darkMode: boolean;
+    toggleDarkMode: () => void;
+};
+
+export const DarkModeContext = React.createContext<DarkModeState>({
+    darkMode: false,
+    toggleDarkMode: () => void 0,
+});
