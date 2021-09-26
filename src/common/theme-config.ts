@@ -1,9 +1,10 @@
-import { calculateColor, step2percent } from './color';
+import { calculateColor, calculateOpacity, step2percent } from './color';
 import { RadiusCode } from './radius';
 import { SpaceCode } from './space';
 
 export type ThemeConfigColorProps = {
     step?: number;
+    opacity?: number;
     darkMode?: boolean;
 };
 
@@ -33,7 +34,13 @@ export class ThemeConfig {
             ? (darkMode ? this.color['DARK'] : this.color['LIGHT'])
             : (darkMode ? this.color['LIGHT'] : this.color['DARK']);
 
-        return calculateColor(from, to, step2percent(step));
+        const color = calculateColor(from, to, step2percent(step));
+
+        if (typeof props.opacity !== 'undefined') {
+            return calculateOpacity(color, props.opacity);
+        }
+
+        return color;
     }
 
     setColor(name: string, value: string): void {
