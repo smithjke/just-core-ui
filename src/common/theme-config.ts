@@ -26,18 +26,18 @@ export class ThemeConfig {
             darkMode = false,
         } = props;
 
-        if (step === 0) {
-            return from;
+        let color = from;
+
+        if (step !== 0) {
+            const to = step > 0
+                ? (darkMode ? this.color['DARK'] : this.color['LIGHT'])
+                : (darkMode ? this.color['LIGHT'] : this.color['DARK']);
+
+            color = calculateColor(from, to, step2percent(step));
         }
 
-        const to = step > 0
-            ? (darkMode ? this.color['DARK'] : this.color['LIGHT'])
-            : (darkMode ? this.color['LIGHT'] : this.color['DARK']);
-
-        const color = calculateColor(from, to, step2percent(step));
-
         if (typeof props.opacity !== 'undefined') {
-            return calculateOpacity(color, props.opacity);
+            color = calculateOpacity(color, props.opacity);
         }
 
         return color;
