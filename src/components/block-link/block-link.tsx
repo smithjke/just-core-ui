@@ -7,8 +7,8 @@ import { Text } from '../text';
 const tc = getThemeConfig();
 
 const SIZE = 20;
-const PRIMARY_COLOR = tc.getParamColor('BUTTON_PRIMARY_COLOR');
-const PRIMARY_COLOR_HOVERED = tc.getRawColor(PRIMARY_COLOR, { step: -3 });
+const getPrimaryColor = () => tc.getParamColor('BUTTON_PRIMARY_COLOR');
+const getPrimaryColorHovered = () => tc.getRawColor(getPrimaryColor(), { step: -3 });
 
 export type BlockLinkProps = {
     onClick?: () => void;
@@ -29,7 +29,7 @@ const useStyles = createUseStyles({
 });
 
 export function BlockLink(props: BlockLinkProps): JSX.Element {
-    const [color, setColor] = useState(PRIMARY_COLOR);
+    const [color, setColor] = useState(getPrimaryColor());
     const styles = useStyles();
 
     const icon = Boolean(props.icon) && React.createElement(props.icon, {
@@ -41,8 +41,8 @@ export function BlockLink(props: BlockLinkProps): JSX.Element {
         <div
             className={styles.BlockLink}
             onClick={props.onClick}
-            onMouseEnter={() => setColor(PRIMARY_COLOR_HOVERED)}
-            onMouseLeave={() => setColor(PRIMARY_COLOR)}
+            onMouseEnter={() => setColor(getPrimaryColorHovered())}
+            onMouseLeave={() => setColor(getPrimaryColor())}
         >
             <Cell paddingY={'xs'}>
                 <div className={styles.BlockLink__Container}>
