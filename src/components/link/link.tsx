@@ -12,6 +12,11 @@ export type LinkProps = {
     onClick?: () => void;
 
     /**
+     * Link is disabled
+     */
+    disabled?: boolean;
+
+    /**
      * Содержимое ссылки (текст)
      */
     children?: React.ReactNode;
@@ -24,10 +29,10 @@ export type LinkProps = {
 
 const useStyles = createUseStyles({
     Link: {
-        color: (props: LinkProps) => tc.getParamColor('PRIMARY_COLOR', { darkMode: props.darkMode }),
-        cursor: 'pointer',
+        color: ({ darkMode, disabled }: LinkProps) => tc.getParamColor('LINK_PRIMARY_COLOR', { step: disabled ? 5 : 0, darkMode }),
+        cursor: ({ disabled }: LinkProps) => disabled ? null : 'pointer',
         '&:hover': {
-            color: (props: LinkProps) => tc.getParamColor('PRIMARY_COLOR', { step: -2, darkMode: props.darkMode }),
+            color: ({ darkMode, disabled }: LinkProps) => tc.getParamColor('LINK_PRIMARY_COLOR', { step: disabled ? 5 : -3, darkMode }),
         },
     },
 })
@@ -40,10 +45,14 @@ export function Link(props: LinkProps): JSX.Element {
         darkMode,
     });
 
+    const onClick = () => {
+        !props.disabled && props.onClick();
+    };
+
     return (
         <span
             className={styles.Link}
-            onClick={props.onClick}
+            onClick={onClick}
         >
             {props.children}
         </span>

@@ -22,6 +22,7 @@ export const SPACE: Record<SpaceCode, number> = {
 export const DefaultParams = {
     BUTTON_PRIMARY_COLOR: 'GRAPE',
     BUTTON_SECONDARY_COLOR: 'BLUE',
+    LINK_PRIMARY_COLOR: 'GRAPE',
     PRIMARY_COLOR: 'GRAPE',
     RADIUS,
     SPACE,
