@@ -1,13 +1,14 @@
-import { RadiusCode } from './radius';
-import { SpaceCode } from './space';
+export type RadiusCode = 's' | 'm' | 'l';
 
-export const RADIUS: Record<RadiusCode, number> = {
+export type SpaceCode = '2xs' | 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | '3xl' | '4xl';
+
+const RADIUS: Record<RadiusCode, number> = {
     's': 3,
     'm': 6,
     'l': 12,
 };
 
-export const SPACE: Record<SpaceCode, number> = {
+const SPACE: Record<SpaceCode, number> = {
     '2xs': 4,
     'xs': 8,
     's': 12,

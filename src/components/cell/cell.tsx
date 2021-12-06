@@ -1,10 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { RadiusCode, SpaceCode } from '../../common';
-import { useDarkMode } from '../../hooks/use-dark-mode';
-import { getThemeConfig } from '../../utils/get-theme-config';
-
-const tc = getThemeConfig();
+import { StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 
 export type CellProps = {
     padding?: SpaceCode;
@@ -23,29 +21,35 @@ export type CellProps = {
     borderLeft?: boolean;
     radius?: RadiusCode;
     spaceBetween?: boolean;
-    darkMode?: boolean;
     children: React.ReactNode;
 };
 
-const useStyles = createUseStyles({
-    Cell: {
-        paddingTop: ({ paddingTop }: CellProps) => paddingTop ? tc.getSpace(paddingTop) : 0,
-        paddingBottom: ({ paddingBottom }: CellProps) => paddingBottom ? tc.getSpace(paddingBottom) : 0,
-        paddingLeft: ({ paddingLeft }: CellProps) => paddingLeft ? tc.getSpace(paddingLeft) : 0,
-        paddingRight: ({ paddingRight }: CellProps) => paddingRight ? tc.getSpace(paddingRight) : 0,
-        borderRadius: ({ radius }: CellProps) => radius ? tc.getRadius(radius) : 0,
-        borderTop: ({ borderTop, darkMode }: CellProps) => borderTop && `1px solid ${tc.getMidColor({ step: 5, darkMode })}`,
-        borderBottom: ({ borderBottom, darkMode }: CellProps) => borderBottom && `1px solid ${tc.getMidColor({ step: 5, darkMode })}`,
-        borderRight: ({ borderRight, darkMode }: CellProps) => borderRight && `1px solid ${tc.getMidColor({ step: 5, darkMode })}`,
-        borderLeft: ({ borderLeft, darkMode }: CellProps) => borderLeft && `1px solid ${tc.getMidColor({ step: 5, darkMode })}`,
-        display: ({ spaceBetween }: CellProps) => spaceBetween ? 'flex' : null,
-        justifyContent: ({ spaceBetween }: CellProps) => spaceBetween ? 'space-between' : null,
-        alignItems: ({ spaceBetween }: CellProps) => spaceBetween ? 'center' : null,
-    },
-});
+const getBorderColor = (theme: Theme): string => StyleService.instance.mutateColor(
+    StyleService.instance.getBotColor(theme),
+    StyleService.instance.getTopColor(theme),
+    { step: 7 },
+);
+
+const useStyles = createUseStyles((theme: Theme) => ({
+    Cell: (props: CellProps) => ({
+        paddingTop: props.paddingTop ? StyleService.instance.getSpace(theme, props.paddingTop) : 0,
+        paddingBottom: props.paddingBottom ? StyleService.instance.getSpace(theme, props.paddingBottom) : 0,
+        paddingLeft: props.paddingLeft ? StyleService.instance.getSpace(theme, props.paddingLeft) : 0,
+        paddingRight: props.paddingRight ? StyleService.instance.getSpace(theme, props.paddingRight) : 0,
+        borderRadius: props.radius ? StyleService.instance.getRadius(theme, props.radius) : 0,
+        borderTop: props.borderTop && `1px solid ${getBorderColor(theme)}`,
+        borderBottom: props.borderBottom && `1px solid ${getBorderColor(theme)}`,
+        borderLeft: props.borderLeft && `1px solid ${getBorderColor(theme)}`,
+        borderRight: props.borderRight && `1px solid ${getBorderColor(theme)}`,
+        display: props.spaceBetween ? 'flex' : null,
+        justifyContent: props.spaceBetween ? 'space-between' : null,
+        alignItems: props.spaceBetween ? 'center' : null,
+    }),
+}));
 
 export function Cell(props: CellProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
+
     const {
         padding,
         paddingX = padding,
@@ -79,7 +83,7 @@ export function Cell(props: CellProps): JSX.Element {
         borderBottom,
         borderLeft,
         borderRight,
-        darkMode,
+        theme,
     });
 
     return (

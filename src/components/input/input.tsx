@@ -1,11 +1,9 @@
 import React, { ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
-import { useDarkMode } from '../../hooks/use-dark-mode';
-import { getThemeConfig } from '../../utils/get-theme-config';
+import { StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 import { Space } from '../space';
 import { Text } from '../text';
-
-const tc = getThemeConfig();
 
 export type InputProps = {
     title: string;
@@ -17,19 +15,26 @@ export type InputProps = {
     darkMode?: boolean;
 };
 
-const useStyles = createUseStyles({
+const getBorderColor = (theme: Theme): string => StyleService.instance.mutateColor(
+    StyleService.instance.getBotColor(theme),
+    StyleService.instance.getTopColor(theme),
+    { step: 7 },
+);
+
+const useStyles = createUseStyles((theme: Theme) => ({
     Input: {},
-    Input__Input: {
-        border: (props: InputProps) => `1px solid ${tc.getMidColor({ step: 5, darkMode: props.darkMode })}`,
-        borderRadius: tc.getRadius('s'),
+    Input__Input: (props: InputProps) => ({
+        background: StyleService.instance.getTopColor(theme),
+        border: `1px solid ${getBorderColor(theme)}`,
+        borderRadius: StyleService.instance.getRadius(theme, 's'),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',
-    },
-});
+    }),
+}));
 
 export function Input(props: InputProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
 
     const {
         type = 'text',
@@ -37,7 +42,7 @@ export function Input(props: InputProps): JSX.Element {
 
     const styles = useStyles({
         ...props,
-        darkMode,
+        theme,
     });
 
     return (
@@ -46,7 +51,6 @@ export function Input(props: InputProps): JSX.Element {
             <Text
                 size={'s'}
                 height={'s'}
-                colorStep={0}
             >
                 {props.title}
             </Text>
@@ -62,7 +66,6 @@ export function Input(props: InputProps): JSX.Element {
             <Text
                 size={'s'}
                 height={'s'}
-                colorStep={0}
             >
                 {props.bottom || (<>&nbsp;</>)}
             </Text>

@@ -1,48 +1,44 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { useDarkMode } from '../../hooks/use-dark-mode';
-import { getThemeConfig } from '../../utils/get-theme-config';
-
-const tc = getThemeConfig();
+import { ColorService, StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 
 export type LinkProps = {
-    /**
-     * Действие, выполняемое при нажатии
-     */
     onClick?: () => void;
-
-    /**
-     * Link is disabled
-     */
     disabled?: boolean;
-
-    /**
-     * Содержимое ссылки (текст)
-     */
     children?: React.ReactNode;
-
-    /**
-     * Dark Mode
-     */
-    darkMode?: boolean;
 };
 
-const useStyles = createUseStyles({
-    Link: {
-        color: ({ darkMode, disabled }: LinkProps) => tc.getParamColor('LINK_PRIMARY_COLOR', { step: disabled ? 5 : 0, darkMode }),
-        cursor: ({ disabled }: LinkProps) => disabled ? null : 'pointer',
+const getLinkPrimaryColor = (theme: Theme) => StyleService.instance.getParamColor(theme, 'LINK_PRIMARY_COLOR');
+
+const getLinkPrimaryColorDisabled = (theme: Theme) => ColorService.instance.calculateOpacity(getLinkPrimaryColor(theme), 0.5);
+
+const getLinkPrimaryColorHovered = (theme: Theme) => StyleService.instance.mutateColor(
+    getLinkPrimaryColor(theme),
+    StyleService.instance.getBotColor(theme),
+    { step: 2 },
+);
+
+const useStyles = createUseStyles((theme: Theme) => ({
+    Link: (props: LinkProps) => ({
+        color: props.disabled
+            ? getLinkPrimaryColorDisabled(theme)
+            : getLinkPrimaryColor(theme),
+        cursor: props.disabled ? null : 'pointer',
         '&:hover': {
-            color: ({ darkMode, disabled }: LinkProps) => tc.getParamColor('LINK_PRIMARY_COLOR', { step: disabled ? 5 : -3, darkMode }),
+            color: props.disabled
+                ? getLinkPrimaryColorDisabled(theme)
+                : getLinkPrimaryColorHovered(theme),
         },
-    },
-})
+    }),
+}));
 
 export function Link(props: LinkProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
 
     const styles = useStyles({
         ...props,
-        darkMode,
+        theme,
     });
 
     const onClick = () => {

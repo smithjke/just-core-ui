@@ -8,7 +8,11 @@ export default {
 } as Meta;
 
 const Template: Story<SpaceProps> = (args) => (
-    <Cmp {...args}/>
+    <>
+        <div style={{ background: '#999', height: 30 }}/>
+        <Cmp {...args}/>
+        <div style={{ background: '#999', height: 30 }}/>
+    </>
 );
 
 export const Space = Template.bind({});

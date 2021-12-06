@@ -1,45 +1,42 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { getThemeConfig } from '../../utils';
-import { useDarkMode } from '../../hooks';
-
-const tc = getThemeConfig();
+import { ColorService, StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 
 export type ToggleProps = {
     value: boolean;
     onClick: () => void;
-    darkMode?: boolean;
 };
 
-const useStyles = createUseStyles({
-    Toggle: {
-        backgroundColor: ({ value, darkMode }: ToggleProps) => value
-            ? tc.getColor('GREEN', { step: 1 })
-            : tc.getMidColor({ step: 6, darkMode }),
+const useStyles = createUseStyles((theme: Theme) => ({
+    Toggle: (props: ToggleProps) => ({
+        backgroundColor: props.value
+            ? StyleService.instance.getColor(theme, 'GREEN')
+            : StyleService.instance.getBotColor(theme),
         display: 'flex',
         width: 32,
         height: 18,
         borderRadius: 18,
         paddingTop: 2,
-        paddingLeft: ({ value }: ToggleProps) => value ? 16 : 2,
+        paddingLeft: props.value ? 16 : 2,
         boxSizing: 'border-box',
         cursor: 'pointer',
         transition: 'background-color 0.125s ease, padding-left 0.125s ease',
-    },
-    Toggle__Ball: {
-        backgroundColor: tc.getMidColor({ step: 8, darkMode: false }),
+    }),
+    Toggle__Ball: () => ({
+        backgroundColor: StyleService.instance.getTopColor(theme),
         width: 14,
         height: 14,
         borderRadius: 14,
-    },
-});
+    }),
+}));
 
 export function Toggle(props: ToggleProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
 
     const styles = useStyles({
         ...props,
-        darkMode,
+        theme,
     });
 
     return (

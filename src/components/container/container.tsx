@@ -16,10 +16,10 @@ export type ContainerProps = {
 };
 
 const useStyles = createUseStyles({
-    Container: {
-        maxWidth: (props: ContainerProps) => props.maxWidth ? `${props.maxWidth}px` : null,
+    Container: (props: ContainerProps) => ({
+        maxWidth: props.maxWidth ? `${props.maxWidth}px` : null,
         margin: '0 auto',
-    },
+    }),
 });
 
 export function Container(props: ContainerProps): JSX.Element {

@@ -1,15 +1,16 @@
 import React from 'react';
 import { SpaceCode } from '../../common';
-import { getThemeConfig } from '../../utils/get-theme-config';
-
-const tc = getThemeConfig();
+import { StyleService } from '../../services';
+import { useTheme } from '../../state';
 
 export type SpaceProps = {
     h: SpaceCode;
 };
 
 export function Space(props: SpaceProps): JSX.Element {
-    const height = tc.getSpace(props.h);
+    const theme = useTheme();
+
+    const height = StyleService.instance.getSpace(theme, props.h);
 
     return (
         <div style={{ height }}/>

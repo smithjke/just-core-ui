@@ -1,61 +1,22 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { getThemeConfig } from '../../utils/get-theme-config';
-import { useDarkMode } from '../../hooks/use-dark-mode';
-import { FontSize, Text } from '../text';
+import { StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 import { Loader } from '../loader';
-
-const tc = getThemeConfig();
+import { FontSize, Text } from '../text';
 
 export type ButtonPropsType = 'primary' | 'secondary';
 
 export type ButtonPropsSize = 's' | 'm' | 'l';
 
 export type ButtonProps = {
-    /**
-     * Тип кнопки
-     */
     type?: ButtonPropsType;
-
-    /**
-     * Размер
-     */
     size?: ButtonPropsSize;
-
-    /**
-     * Действие при нажатии
-     */
-    onClick?: () => void;
-
-    /**
-     * Заблокирована ли кнопка
-     */
-    disabled?: boolean;
-
-    /**
-     * Кнопка в состоянии загрузки
-     */
-    loading?: boolean;
-
-    /**
-     * Заполнять ли все пространство
-     */
     autoFill?: boolean;
-
-    /**
-     * Дочерний элемент
-     */
+    disabled?: boolean;
+    loading?: boolean;
+    onClick?: () => void;
     children?: React.ReactNode;
-
-    /**
-     * Dark Mode
-     */
-    darkMode?: boolean;
-
-    /**
-     * Фоновый цвет кнопки
-     */
-    backgroundColor?: string;
 };
 
 const type2paramName: Record<ButtonPropsType, string> = {
@@ -63,55 +24,75 @@ const type2paramName: Record<ButtonPropsType, string> = {
     'secondary': 'BUTTON_SECONDARY_COLOR',
 };
 
-type ButtonParam = {
+type ButtonConfig = {
     padding: string;
     borderRadius: number;
     textSize: FontSize;
 };
 
-const size2params: Record<ButtonPropsSize, ButtonParam> = {
-    's': {
-        padding: `7px ${tc.getSpace('xs')}px`,
-        borderRadius: tc.getRadius('s'),
-        textSize: 's',
-    },
-    'm': {
-        padding: `${tc.getSpace('xs')}px ${tc.getSpace('m')}px`,
-        borderRadius: tc.getRadius('s'),
-        textSize: 'm',
-    },
-    'l': {
-        padding: `${tc.getSpace('s')}px ${tc.getSpace('l')}px`,
-        borderRadius: tc.getRadius('m'),
-        textSize: 'm',
-    },
+const getButtonConfig = (props: ButtonProps, theme: Theme): ButtonConfig => {
+    const size2params: Record<ButtonPropsSize, ButtonConfig> = {
+        's': {
+            padding: `7px ${StyleService.instance.getSpace(theme, 'xs')}px`,
+            borderRadius: StyleService.instance.getRadius(theme, 's'),
+            textSize: 's',
+        },
+        'm': {
+            padding: `${StyleService.instance.getSpace(theme, 'xs')}px ${StyleService.instance.getSpace(theme, 'm')}px`,
+            borderRadius: StyleService.instance.getRadius(theme, 's'),
+            textSize: 'm',
+        },
+        'l': {
+            padding: `${StyleService.instance.getSpace(theme, 's')}px ${StyleService.instance.getSpace(theme, 'l')}px`,
+            borderRadius: StyleService.instance.getRadius(theme, 'm'),
+            textSize: 'm',
+        },
+    };
+
+    return size2params[props.size];
 };
 
-const useStyles = createUseStyles({
+const getButtonColor = (props: ButtonProps, theme: Theme) => StyleService.instance.getParamColor(theme, type2paramName[props.type]);
+
+const getButtonDisabledColor = (props: ButtonProps, theme: Theme) => StyleService.instance.mutateColor(
+    StyleService.instance.getBotColor(theme),
+    StyleService.instance.getTopColor(theme),
+    { step: 6 },
+);
+
+const getButtonHoveredColor = (props: ButtonProps, theme: Theme) => StyleService.instance.mutateColor(
+    getButtonColor(props, theme),
+    StyleService.instance.getBotColor(theme),
+    { step: 2 },
+);
+
+const useStyles = createUseStyles((theme: Theme) => ({
     Button: (props: ButtonProps) => ({
         display: 'flex',
         justifyContent: 'center',
         position: 'relative',
-        backgroundColor: props.backgroundColor,
+        backgroundColor: props.disabled
+            ? getButtonDisabledColor(props, theme)
+            : getButtonColor(props, theme),
         border: 'none',
         margin: 0,
-        padding: size2params[props.size].padding,
-        borderRadius: size2params[props.size].borderRadius,
-        cursor: props.disabled ? null : 'pointer',
+        padding: getButtonConfig(props, theme).padding,
+        borderRadius: getButtonConfig(props, theme).borderRadius,
+        cursor: (props.disabled || props.loading) ? null : 'pointer',
         boxSizing: 'border-box',
         width: props.autoFill ? '100%' : void 0,
         outline: 0,
-        '&:hover': props.disabled ? {
-            backgroundColor: tc.getMidColor({ step: 4, darkMode: props.darkMode }),
-        } : {
-            backgroundColor: tc.getRawColor(props.backgroundColor, { step: -1, darkMode: props.darkMode }),
+        '&:hover': {
+            backgroundColor: props.disabled
+                ? getButtonDisabledColor(props, theme)
+                : (props.loading ? getButtonColor(props, theme) :  getButtonHoveredColor(props, theme)),
         }
     }),
-    Button__Text: {
-        opacity: (props: ButtonProps) => props.loading ? 0 : 1,
-    },
-    Button__Loader: {
-        display: (props: ButtonProps) => props.loading ? 'block' : 'none',
+    Button__Text: (props: ButtonProps) => ({
+        opacity: props.loading ? 0 : 1,
+    }),
+    Button__Loader: (props: ButtonProps) => ({
+        display: props.loading ? 'block' : 'none',
         position: 'absolute',
         width: 20,
         height: 20,
@@ -119,26 +100,27 @@ const useStyles = createUseStyles({
         marginLeft: -10,
         top: '50%',
         left: '50%',
-    },
-});
+    }),
+}));
 
 export function Button(props: ButtonProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
+    const colorLight = StyleService.instance.getColor(theme, 'LIGHT');
 
     const {
-        size = 'm',
         type = 'primary',
-        backgroundColor = props.disabled
-            ? tc.getMidColor({ step: 4, darkMode })
-            : tc.getParamColor(type2paramName[type], { step: 0, darkMode }),
+        size = 'm',
     } = props;
 
-    const styles = useStyles({
+    const filledProps = {
         ...props,
         size,
         type,
-        darkMode,
-        backgroundColor,
+    };
+
+    const styles = useStyles({
+        ...filledProps,
+        theme,
     });
 
     const onClick = () => !props.disabled && !props.loading && props.onClick && props.onClick();
@@ -149,16 +131,17 @@ export function Button(props: ButtonProps): JSX.Element {
             onClick={onClick}
         >
             <div className={styles.Button__Loader}>
-                <Loader size={20} color={tc.getColor('LIGHT')}/>
+                <Loader
+                    size={20}
+                    color={colorLight}
+                />
             </div>
             <div className={styles.Button__Text}>
                 <Text
-                    size={size2params[size].textSize}
+                    size={getButtonConfig(filledProps, theme).textSize}
                     weight={'medium'}
                     height={'s'}
-                    colorStep={8}
-                    darkMode={props.darkMode}
-                    forceColorStep
+                    color={colorLight}
                 >
                     {props.children}
                 </Text>

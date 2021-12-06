@@ -1,9 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { getThemeConfig } from '../../utils/get-theme-config';
-import { useDarkMode } from '../../hooks/use-dark-mode';
-
-const tc = getThemeConfig();
+import { StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 
 // FONT SIZE
 
@@ -57,93 +55,42 @@ export const FontWeightBase: Record<FontWeight, number> = {
 };
 
 export type TextProps = {
-    /**
-     * Размер текста
-     */
     size?: FontSize;
-
-    /**
-     * Высота строки
-     */
     height?: LineHeight;
-
-    /**
-     * Жирнота
-     */
     weight?: FontWeight;
-
-    /**
-     * Цвет
-     */
     color?: string;
-
-    /**
-     * Шаг цвета
-     */
-    colorStep?: number;
-
-    /**
-     * Не менять цвет при Dark Mode
-     */
-    forceColorStep?: boolean;
-
-    /**
-     * Отключить присваивание цвета
-     */
-    disableColor?: boolean;
-
-    /**
-     * Тип HTML элемента
-     */
     tag?: 'div' | 'span';
-
-    /**
-     * Выравнивание текста
-     */
     align?: 'left' | 'center' | 'right';
-
-    /**
-     * Дочерний элемент
-     */
     children?: React.ReactNode;
-
-    /**
-     * Force Dark mode
-     */
-    darkMode?: boolean;
 };
 
-// @todo шрифт не скейлится в цифрах у продукта
-const useStyles = createUseStyles({
-    Text: {
+const useStyles = createUseStyles((theme: Theme) => ({
+    Text: (props: TextProps) =>  ({
         fontFamily: 'Inter, sans-serif',
-        fontSize: (props: TextProps) => FontSizeDesktop[props.size],
-        fontWeight: (props: TextProps) => FontWeightBase[props.weight],
-        lineHeight: (props: TextProps) => LineHeightBase[props.height],
-        textAlign: (props: TextProps) => props.align,
-        color: (props: TextProps) => props.disableColor
-            ? null
-            : tc.getRawColor(props.color, {
-                step: props.colorStep,
-                darkMode: !props.forceColorStep && props.darkMode,
-            }),
+        fontSize: FontSizeDesktop[props.size],
+        fontWeight: FontWeightBase[props.weight],
+        lineHeight: LineHeightBase[props.height],
+        textAlign: props.align,
+        color: typeof props.color === 'undefined' ? StyleService.instance.mutateColor(
+            StyleService.instance.getBotColor(theme),
+            StyleService.instance.getTopColor(theme),
+            { step: 2 },
+        ) : props.color,
         '@media (max-width: 400px)': {
             fontSize: (props: TextProps) => FontSizeMobile[props.size],
         },
-    },
-});
+    }),
+}));
 
 export function Text(props: TextProps): JSX.Element {
-    const darkMode = useDarkMode(props);
+    const theme = useTheme();
 
     const {
         size = 'm',
         height = 'm',
         weight = 'regular',
-        color = tc.getMidColor(),
-        colorStep = -6,
-        tag = 'div',
         align = 'left',
+        tag = 'div',
         children,
     } = props;
 
@@ -152,10 +99,8 @@ export function Text(props: TextProps): JSX.Element {
         size,
         height,
         weight,
-        darkMode,
-        color,
-        colorStep,
         align,
+        theme,
     });
 
     return React.createElement(tag, {

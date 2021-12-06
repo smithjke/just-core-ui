@@ -1,13 +1,12 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { RadiusCode } from '../../common';
-import { getThemeConfig } from '../../utils/get-theme-config';
-
-const tc = getThemeConfig();
+import { StyleService } from '../../services';
+import { Theme, useTheme } from '../../state';
 
 export type AvatarPropsSize = 'xs' | 's' | 'm' | 'l' | 'xl';
 
-export const AvatarPropsSizePixel: Record<AvatarPropsSize, number> = {
+export const avatarPropsSize2pixel: Record<AvatarPropsSize, number> = {
     'xs': 28,
     's': 32,
     'm': 40,
@@ -16,55 +15,36 @@ export const AvatarPropsSizePixel: Record<AvatarPropsSize, number> = {
 };
 
 export type AvatarProps = {
-    /**
-     * Размер аватара
-     */
     size: AvatarPropsSize;
-
-    /**
-     * Радиус аватара
-     */
     borderRadius?: RadiusCode;
-
-    /**
-     * Цвет фона
-     */
     color?: string;
-
-    /**
-     * Дочерний элемент
-     */
     children?: React.ReactNode;
 };
 
-function b2p(size: AvatarPropsSize, br?: RadiusCode): number {
-    if (br) {
-        return tc.getRadius(br);
-    }
-
-    return AvatarPropsSizePixel[size];
-}
-
-const useStyles = createUseStyles({
-    Avatar: {
-        width: ({ size }: AvatarProps) => AvatarPropsSizePixel[size],
-        height: ({ size }: AvatarProps) => AvatarPropsSizePixel[size],
-        borderRadius: ({ size, borderRadius }: AvatarProps) => b2p(size, borderRadius),
+const useStyles = createUseStyles((theme: Theme) => ({
+    Avatar: (props: AvatarProps) => ({
+        width: avatarPropsSize2pixel[props.size],
+        height: avatarPropsSize2pixel[props.size],
+        borderRadius: typeof props.borderRadius === 'undefined'
+            ? avatarPropsSize2pixel[props.size]
+            : StyleService.instance.getRadius(theme, props.borderRadius),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: ({ color }: AvatarProps) => color,
-    },
-});
+        backgroundColor: props.color || StyleService.instance.mutateColor(
+            StyleService.instance.getBotColor(theme),
+            StyleService.instance.getTopColor(theme),
+            { step: 7 },
+        ),
+    }),
+}));
 
 export function Avatar(props: AvatarProps): JSX.Element {
-    const {
-        color = tc.getMidColor({ step: 4 }),
-    } = props;
+    const theme = useTheme();
 
     const styles = useStyles({
         ...props,
-        color,
+        theme,
     });
 
     return (
