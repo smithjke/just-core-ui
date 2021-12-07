@@ -4,7 +4,7 @@ export class ThemeService {
     static readonly instance = new ThemeService();
 
     toggleInvert(): void {
-        ThemeState.invert$.next(ThemeState.invert$.value);
+        ThemeState.invert$.next(!ThemeState.invert$.value);
     }
 
     addColors(colors: Theme['colors']): void {
