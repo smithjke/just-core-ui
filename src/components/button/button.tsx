@@ -66,26 +66,26 @@ const getButtonHoveredColor = (props: ButtonProps, theme: Theme) => StyleService
     { step: 2 },
 );
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    Button: (props: ButtonProps) => ({
+const useStyles = createUseStyles({
+    Button: (props: ButtonProps & { theme: Theme }) => ({
         display: 'flex',
         justifyContent: 'center',
         position: 'relative',
         backgroundColor: props.disabled
-            ? getButtonDisabledColor(props, theme)
-            : getButtonColor(props, theme),
+            ? getButtonDisabledColor(props, props.theme)
+            : getButtonColor(props, props.theme),
         border: 'none',
         margin: 0,
-        padding: getButtonConfig(props, theme).padding,
-        borderRadius: getButtonConfig(props, theme).borderRadius,
+        padding: getButtonConfig(props, props.theme).padding,
+        borderRadius: getButtonConfig(props, props.theme).borderRadius,
         cursor: (props.disabled || props.loading) ? null : 'pointer',
         boxSizing: 'border-box',
         width: props.autoFill ? '100%' : void 0,
         outline: 0,
         '&:hover': {
             backgroundColor: props.disabled
-                ? getButtonDisabledColor(props, theme)
-                : (props.loading ? getButtonColor(props, theme) :  getButtonHoveredColor(props, theme)),
+                ? getButtonDisabledColor(props, props.theme)
+                : (props.loading ? getButtonColor(props, props.theme) :  getButtonHoveredColor(props, props.theme)),
         }
     }),
     Button__Text: (props: ButtonProps) => ({
@@ -101,7 +101,7 @@ const useStyles = createUseStyles((theme: Theme) => ({
         top: '50%',
         left: '50%',
     }),
-}));
+});
 
 export function Button(props: ButtonProps): JSX.Element {
     const theme = useTheme();

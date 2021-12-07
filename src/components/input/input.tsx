@@ -21,17 +21,17 @@ const getBorderColor = (theme: Theme): string => StyleService.instance.mutateCol
     { step: 7 },
 );
 
-const useStyles = createUseStyles((theme: Theme) => ({
+const useStyles = createUseStyles({
     Input: {},
-    Input__Input: (props: InputProps) => ({
-        background: StyleService.instance.getTopColor(theme),
-        border: `1px solid ${getBorderColor(theme)}`,
-        borderRadius: StyleService.instance.getRadius(theme, 's'),
+    Input__Input: (props: InputProps & { theme: Theme }) => ({
+        background: StyleService.instance.getTopColor(props.theme),
+        border: `1px solid ${getBorderColor(props.theme)}`,
+        borderRadius: StyleService.instance.getRadius(props.theme, 's'),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',
     }),
-}));
+});
 
 export function Input(props: InputProps): JSX.Element {
     const theme = useTheme();

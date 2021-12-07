@@ -21,23 +21,23 @@ export type AvatarProps = {
     children?: React.ReactNode;
 };
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    Avatar: (props: AvatarProps) => ({
+const useStyles = createUseStyles({
+    Avatar: (props: AvatarProps & { theme: Theme }) => ({
         width: avatarPropsSize2pixel[props.size],
         height: avatarPropsSize2pixel[props.size],
         borderRadius: typeof props.borderRadius === 'undefined'
             ? avatarPropsSize2pixel[props.size]
-            : StyleService.instance.getRadius(theme, props.borderRadius),
+            : StyleService.instance.getRadius(props.theme, props.borderRadius),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: props.color || StyleService.instance.mutateColor(
-            StyleService.instance.getBotColor(theme),
-            StyleService.instance.getTopColor(theme),
+            StyleService.instance.getBotColor(props.theme),
+            StyleService.instance.getTopColor(props.theme),
             { step: 7 },
         ),
     }),
-}));
+});
 
 export function Avatar(props: AvatarProps): JSX.Element {
     const theme = useTheme();

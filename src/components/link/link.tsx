@@ -19,19 +19,19 @@ const getLinkPrimaryColorHovered = (theme: Theme) => StyleService.instance.mutat
     { step: 2 },
 );
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    Link: (props: LinkProps) => ({
+const useStyles = createUseStyles({
+    Link: (props: LinkProps & { theme: Theme }) => ({
         color: props.disabled
-            ? getLinkPrimaryColorDisabled(theme)
-            : getLinkPrimaryColor(theme),
+            ? getLinkPrimaryColorDisabled(props.theme)
+            : getLinkPrimaryColor(props.theme),
         cursor: props.disabled ? null : 'pointer',
         '&:hover': {
             color: props.disabled
-                ? getLinkPrimaryColorDisabled(theme)
-                : getLinkPrimaryColorHovered(theme),
+                ? getLinkPrimaryColorDisabled(props.theme)
+                : getLinkPrimaryColorHovered(props.theme),
         },
     }),
-}));
+});
 
 export function Link(props: LinkProps): JSX.Element {
     const theme = useTheme();

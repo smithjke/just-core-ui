@@ -64,23 +64,23 @@ export type TextProps = {
     children?: React.ReactNode;
 };
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    Text: (props: TextProps) =>  ({
+const useStyles = createUseStyles({
+    Text: (props: TextProps & { theme: Theme }) =>  ({
         fontFamily: 'Inter, sans-serif',
         fontSize: FontSizeDesktop[props.size],
         fontWeight: FontWeightBase[props.weight],
         lineHeight: LineHeightBase[props.height],
         textAlign: props.align,
         color: typeof props.color === 'undefined' ? StyleService.instance.mutateColor(
-            StyleService.instance.getBotColor(theme),
-            StyleService.instance.getTopColor(theme),
+            StyleService.instance.getBotColor(props.theme),
+            StyleService.instance.getTopColor(props.theme),
             { step: 2 },
         ) : props.color,
         '@media (max-width: 400px)': {
             fontSize: (props: TextProps) => FontSizeMobile[props.size],
         },
     }),
-}));
+});
 
 export function Text(props: TextProps): JSX.Element {
     const theme = useTheme();

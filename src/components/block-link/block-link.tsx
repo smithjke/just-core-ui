@@ -25,17 +25,17 @@ export type BlockLinkProps = {
     children?: React.ReactNode;
 };
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    BlockLink: (props: BlockLinkProps) => ({
+const useStyles = createUseStyles({
+    BlockLink: (props: BlockLinkProps & { theme: Theme }) => ({
         cursor: props.disabled ? null : 'pointer',
     }),
-    BlockLink__Container: {
+    BlockLink__Container: (props: BlockLinkProps & { theme: Theme }) => ({
         height: SIZE,
         display: 'flex',
         alignItems: 'center',
-        gap: StyleService.instance.getSpace(theme, 's'),
-    },
-}));
+        gap: StyleService.instance.getSpace(props.theme, 's'),
+    }),
+});
 
 export function BlockLink(props: BlockLinkProps): JSX.Element {
     const theme = useTheme();

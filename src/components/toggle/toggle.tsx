@@ -1,6 +1,6 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { ColorService, StyleService } from '../../services';
+import { StyleService } from '../../services';
 import { Theme, useTheme } from '../../state';
 
 export type ToggleProps = {
@@ -8,11 +8,11 @@ export type ToggleProps = {
     onClick: () => void;
 };
 
-const useStyles = createUseStyles((theme: Theme) => ({
-    Toggle: (props: ToggleProps) => ({
+const useStyles = createUseStyles({
+    Toggle: (props: ToggleProps & { theme: Theme }) => ({
         backgroundColor: props.value
-            ? StyleService.instance.getColor(theme, 'GREEN')
-            : StyleService.instance.getBotColor(theme),
+            ? StyleService.instance.getColor(props.theme, 'GREEN')
+            : StyleService.instance.getBotColor(props.theme),
         display: 'flex',
         width: 32,
         height: 18,
@@ -23,13 +23,13 @@ const useStyles = createUseStyles((theme: Theme) => ({
         cursor: 'pointer',
         transition: 'background-color 0.125s ease, padding-left 0.125s ease',
     }),
-    Toggle__Ball: () => ({
-        backgroundColor: StyleService.instance.getTopColor(theme),
+    Toggle__Ball: (props: ToggleProps & { theme: Theme }) => ({
+        backgroundColor: StyleService.instance.getTopColor(props.theme),
         width: 14,
         height: 14,
         borderRadius: 14,
     }),
-}));
+});
 
 export function Toggle(props: ToggleProps): JSX.Element {
     const theme = useTheme();
