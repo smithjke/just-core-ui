@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { StyleService } from '../../services';
 import { Theme, useTheme } from '../../state';
+import { colorToTop } from '../../utils';
 
 // FONT SIZE
 
@@ -71,13 +71,9 @@ const useStyles = createUseStyles({
         fontWeight: FontWeightBase[props.weight],
         lineHeight: LineHeightBase[props.height],
         textAlign: props.align,
-        color: typeof props.color === 'undefined' ? StyleService.instance.mutateColor(
-            StyleService.instance.getBotColor(props.theme),
-            StyleService.instance.getTopColor(props.theme),
-            { step: 2 },
-        ) : props.color,
+        color: props.color,
         '@media (max-width: 400px)': {
-            fontSize: (props: TextProps) => FontSizeMobile[props.size],
+            fontSize: FontSizeMobile[props.size],
         },
     }),
 });
@@ -86,6 +82,7 @@ export function Text(props: TextProps): JSX.Element {
     const theme = useTheme();
 
     const {
+        color = colorToTop(theme, 1),
         size = 'm',
         height = 'm',
         weight = 'regular',
@@ -96,6 +93,7 @@ export function Text(props: TextProps): JSX.Element {
 
     const styles = useStyles({
         ...props,
+        color,
         size,
         height,
         weight,
