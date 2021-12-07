@@ -16,7 +16,7 @@ export class ThemeService {
 
     addParams(params: Theme['params']): void {
         ThemeState.params$.next({
-            ...ThemeState.colors$.value,
+            ...ThemeState.params$.value,
             ...params,
         });
     }
