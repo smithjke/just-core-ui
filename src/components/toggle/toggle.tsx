@@ -11,7 +11,7 @@ export type ToggleProps = {
 const useStyles = createUseStyles({
     Toggle: (props: ToggleProps & { theme: Theme }) => ({
         backgroundColor: props.value
-            ? StyleService.instance.getColor(props.theme, 'GREEN')
+            ? StyleService.instance.getParamColor(props.theme, 'TOGGLE_PRIMARY_COLOR')
             : StyleService.instance.getBotColor(props.theme),
         display: 'flex',
         width: 32,

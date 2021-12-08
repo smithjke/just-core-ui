@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
 import { StyleService } from '../../services';
 import { Theme, useTheme } from '../../state';
+import { colorToTop } from '../../utils';
 import { Space } from '../space';
 import { Text } from '../text';
 
@@ -15,18 +16,13 @@ export type InputProps = {
     darkMode?: boolean;
 };
 
-const getBorderColor = (theme: Theme): string => StyleService.instance.mutateColor(
-    StyleService.instance.getBotColor(theme),
-    StyleService.instance.getTopColor(theme),
-    { step: 7 },
-);
-
 const useStyles = createUseStyles({
     Input: {},
     Input__Input: (props: InputProps & { theme: Theme }) => ({
         background: StyleService.instance.getTopColor(props.theme),
-        border: `1px solid ${getBorderColor(props.theme)}`,
+        border: `1px solid ${colorToTop(props.theme, 7)}`,
         borderRadius: StyleService.instance.getRadius(props.theme, 's'),
+        color: colorToTop(props.theme, 2),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',
