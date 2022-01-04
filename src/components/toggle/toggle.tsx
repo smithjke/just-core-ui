@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     Toggle: (props: ToggleProps & { theme: Theme }) => ({
         backgroundColor: props.value
             ? justParamColor(props.theme, 'TOGGLE_PRIMARY_COLOR')
-            : justBotColor(props.theme),
+            : justTopColor(props.theme),
         display: 'flex',
         width: 32,
         height: 18,
@@ -25,7 +25,7 @@ const useStyles = createUseStyles({
         transition: 'background-color 0.125s ease, padding-left 0.125s ease',
     }),
     Toggle__Ball: (props: ToggleProps & { theme: Theme }) => ({
-        backgroundColor: justTopColor(props.theme),
+        backgroundColor: justBotColor(props.theme),
         width: 14,
         height: 14,
         borderRadius: 14,

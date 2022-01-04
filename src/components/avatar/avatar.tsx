@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: props.color || justToTopColor(props.theme, { step: 7 }),
+        backgroundColor: props.color || justToTopColor(props.theme, { step: 1 }),
     }),
 });
 

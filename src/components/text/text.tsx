@@ -2,7 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { FontSize, FontWeight, LineHeight, Theme } from '../../common';
 import { useTheme } from '../../hooks';
-import { justParam, justToTopColor } from '../../utils';
+import { justParam, justToBotColor } from '../../utils';
 
 export type TextProps = {
     size?: FontSize;
@@ -32,7 +32,7 @@ export function Text(props: TextProps): JSX.Element {
     const theme = useTheme();
 
     const {
-        color = justToTopColor(theme, 1),
+        color = justToBotColor(theme, 1),
         size = 'm',
         height = 'm',
         weight = 'regular',

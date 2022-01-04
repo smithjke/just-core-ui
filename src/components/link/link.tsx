@@ -2,7 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../common';
 import { useTheme } from '../../hooks';
-import { justParamColor, justToBotColor } from '../../utils';
+import { justParamColor, justToBotColor, justToTopColor } from '../../utils';
 
 export type LinkProps = {
     onClick?: () => void;
@@ -12,7 +12,7 @@ export type LinkProps = {
 
 const getLinkPrimaryColor = (theme: Theme) => justParamColor(theme, 'LINK_PRIMARY_COLOR');
 
-const getLinkPrimaryColorDisabled = (theme: Theme) => justToBotColor(theme, { opacity: 0.5 }, getLinkPrimaryColor(theme));
+const getLinkPrimaryColorDisabled = (theme: Theme) => justToTopColor(theme, { opacity: 0.5 }, getLinkPrimaryColor(theme));
 
 const getLinkPrimaryColorHovered = (theme: Theme) => justToBotColor(theme, { step: 2 }, getLinkPrimaryColor(theme));
 

@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Theme } from '../../common';
 import { useTheme } from '../../hooks';
-import { justRadius, justTopColor, justToTopColor } from '../../utils';
+import { justRadius, justBotColor, justToBotColor } from '../../utils';
 import { Space } from '../space';
 import { Text } from '../text';
 
@@ -19,10 +19,10 @@ export type InputProps = {
 const useStyles = createUseStyles({
     Input: {},
     Input__Input: (props: InputProps & { theme: Theme }) => ({
-        background: justTopColor(props.theme),
-        border: `1px solid ${justToTopColor(props.theme, 7)}`,
+        background: justBotColor(props.theme),
+        border: `1px solid ${justToBotColor(props.theme, 7)}`,
         borderRadius: justRadius(props.theme, 's'),
-        color: justToTopColor(props.theme, 2),
+        color: justToBotColor(props.theme, 2),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',

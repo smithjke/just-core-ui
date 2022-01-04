@@ -24,7 +24,7 @@ export type CellProps = {
     children: React.ReactNode;
 };
 
-const getBorderColor = (theme: Theme): string => justToTopColor(theme, { step: 7 });
+const getBorderColor = (theme: Theme): string => justToTopColor(theme, { step: 1 });
 
 const useStyles = createUseStyles({
     Cell: (props: CellProps & { theme: Theme }) => ({

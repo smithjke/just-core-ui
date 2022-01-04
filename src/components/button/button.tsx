@@ -62,7 +62,7 @@ const getButtonConfig = (props: ButtonProps, theme: Theme): ButtonConfig => {
 
 const getButtonColor = (props: ButtonProps, theme: Theme) => justParamColor(theme, type2paramName[props.type]);
 
-const getButtonDisabledColor = (props: ButtonProps, theme: Theme) => justToTopColor(theme, { step: 6 });
+const getButtonDisabledColor = (props: ButtonProps, theme: Theme) => justToBotColor(theme, { step: 6 });
 
 const getButtonHoveredColor = (props: ButtonProps, theme: Theme) => justToBotColor(theme, { step: 2 }, getButtonColor(props, theme));
 
