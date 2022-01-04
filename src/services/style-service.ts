@@ -40,11 +40,11 @@ export class StyleService {
     }
 
     getTopColor(theme: Theme): string {
-        return this.getColor(theme, theme.invert ? 'DARK' : 'LIGHT');
+        return this.getColor(theme, theme.invert ? 'LIGHT' : 'DARK');
     }
 
     getBotColor(theme: Theme): string {
-        return this.getColor(theme, theme.invert ? 'LIGHT' : 'DARK');
+        return this.getColor(theme, theme.invert ? 'DARK' : 'LIGHT');
     }
 
     getParam(theme: Theme, name: string): string | number | object {
