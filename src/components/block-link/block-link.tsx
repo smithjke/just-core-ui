@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { ColorService, StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
+import { Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justParam, justParamColor, justSpace, justToBotColor } from '../../utils';
 import { Cell } from '../cell';
 import { Text } from '../text';
 
+const getLinkPrimaryColor = (theme: Theme) => justParamColor(theme, 'LINK_PRIMARY_COLOR');
 
-const SIZE = 20;
+const getLinkPrimaryColorDisabled = (theme: Theme) => justToBotColor(theme, { opacity: 0.5 }, getLinkPrimaryColor(theme));
 
-const getLinkPrimaryColor = (theme: Theme) => StyleService.instance.getParamColor(theme, 'LINK_PRIMARY_COLOR');
-
-const getLinkPrimaryColorDisabled = (theme: Theme) => ColorService.instance.calculateOpacity(getLinkPrimaryColor(theme), 0.5);
-
-const getLinkPrimaryColorHovered = (theme: Theme) => StyleService.instance.mutateColor(
-    getLinkPrimaryColor(theme),
-    StyleService.instance.getBotColor(theme),
-    { step: 2 },
-);
+const getLinkPrimaryColorHovered = (theme: Theme) => justToBotColor(theme, { step: 2 }, getLinkPrimaryColor(theme));
 
 export type BlockLinkProps = {
     onClick?: () => void;
@@ -30,10 +24,10 @@ const useStyles = createUseStyles({
         cursor: props.disabled ? null : 'pointer',
     }),
     BlockLink__Container: (props: BlockLinkProps & { theme: Theme }) => ({
-        height: SIZE,
+        height: Number(justParam(props.theme, 'BLOCK_LINK_SIZE')),
         display: 'flex',
         alignItems: 'center',
-        gap: StyleService.instance.getSpace(props.theme, 's'),
+        gap: justSpace(props.theme, 's'),
     }),
 });
 
@@ -49,7 +43,7 @@ export function BlockLink(props: BlockLinkProps): JSX.Element {
 
     const icon = Boolean(props.icon) && React.createElement(props.icon, {
         color,
-        size: SIZE,
+        size: Number(justParam(theme, 'BLOCK_LINK_SIZE')),
     });
 
     const onClick = () => {

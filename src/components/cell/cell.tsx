@@ -1,8 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { RadiusCode, SpaceCode } from '../../common';
-import { StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
+import { RadiusCode, SpaceCode, Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justRadius, justSpace, justToTopColor } from '../../utils';
 
 export type CellProps = {
     padding?: SpaceCode;
@@ -20,30 +20,23 @@ export type CellProps = {
     borderRight?: boolean;
     borderLeft?: boolean;
     radius?: RadiusCode;
-    spaceBetween?: boolean;
+    maxWidth?: number;
     children: React.ReactNode;
 };
 
-const getBorderColor = (theme: Theme): string => StyleService.instance.mutateColor(
-    StyleService.instance.getBotColor(theme),
-    StyleService.instance.getTopColor(theme),
-    { step: 7 },
-);
+const getBorderColor = (theme: Theme): string => justToTopColor(theme, { step: 7 });
 
 const useStyles = createUseStyles({
     Cell: (props: CellProps & { theme: Theme }) => ({
-        paddingTop: props.paddingTop ? StyleService.instance.getSpace(props.theme, props.paddingTop) : 0,
-        paddingBottom: props.paddingBottom ? StyleService.instance.getSpace(props.theme, props.paddingBottom) : 0,
-        paddingLeft: props.paddingLeft ? StyleService.instance.getSpace(props.theme, props.paddingLeft) : 0,
-        paddingRight: props.paddingRight ? StyleService.instance.getSpace(props.theme, props.paddingRight) : 0,
-        borderRadius: props.radius ? StyleService.instance.getRadius(props.theme, props.radius) : 0,
+        paddingTop: props.paddingTop ? justSpace(props.theme, props.paddingTop) : 0,
+        paddingBottom: props.paddingBottom ? justSpace(props.theme, props.paddingBottom) : 0,
+        paddingLeft: props.paddingLeft ? justSpace(props.theme, props.paddingLeft) : 0,
+        paddingRight: props.paddingRight ? justSpace(props.theme, props.paddingRight) : 0,
+        borderRadius: props.radius ? justRadius(props.theme, props.radius) : 0,
         borderTop: props.borderTop && `1px solid ${getBorderColor(props.theme)}`,
         borderBottom: props.borderBottom && `1px solid ${getBorderColor(props.theme)}`,
         borderLeft: props.borderLeft && `1px solid ${getBorderColor(props.theme)}`,
         borderRight: props.borderRight && `1px solid ${getBorderColor(props.theme)}`,
-        display: props.spaceBetween ? 'flex' : null,
-        justifyContent: props.spaceBetween ? 'space-between' : null,
-        alignItems: props.spaceBetween ? 'center' : null,
     }),
 });
 
@@ -86,9 +79,20 @@ export function Cell(props: CellProps): JSX.Element {
         theme,
     });
 
+    const children = props.maxWidth ? (
+        <div
+            style={{
+                maxWidth: props.maxWidth,
+                margin: '0 auto',
+            }}
+        >
+            {props.children}
+        </div>
+    ) : props.children;
+
     return (
         <div className={styles.Cell}>
-            {props.children}
+            {children}
         </div>
     );
 }

@@ -10,8 +10,6 @@ function parseRGB(color: string): [number, number, number] {
 }
 
 export class ColorService {
-    static readonly instance = new ColorService();
-
     readonly step2percent: Record<ColorStep, number> = Object.freeze({
         [0]: 0,
         [1]: 0.125,

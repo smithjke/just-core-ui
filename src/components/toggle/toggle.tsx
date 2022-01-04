@@ -1,7 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
+import { Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justBotColor, justParamColor, justTopColor } from '../../utils';
 
 export type ToggleProps = {
     value: boolean;
@@ -11,8 +12,8 @@ export type ToggleProps = {
 const useStyles = createUseStyles({
     Toggle: (props: ToggleProps & { theme: Theme }) => ({
         backgroundColor: props.value
-            ? StyleService.instance.getParamColor(props.theme, 'TOGGLE_PRIMARY_COLOR')
-            : StyleService.instance.getBotColor(props.theme),
+            ? justParamColor(props.theme, 'TOGGLE_PRIMARY_COLOR')
+            : justBotColor(props.theme),
         display: 'flex',
         width: 32,
         height: 18,
@@ -24,7 +25,7 @@ const useStyles = createUseStyles({
         transition: 'background-color 0.125s ease, padding-left 0.125s ease',
     }),
     Toggle__Ball: (props: ToggleProps & { theme: Theme }) => ({
-        backgroundColor: StyleService.instance.getTopColor(props.theme),
+        backgroundColor: justTopColor(props.theme),
         width: 14,
         height: 14,
         borderRadius: 14,

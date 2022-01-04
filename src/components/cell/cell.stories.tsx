@@ -1,9 +1,10 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import { Cell as Cmp, CellProps } from './cell';
+import { ThemeProvider } from '../theme-provider';
 
 export default {
-    title: 'A/Cell',
+    title: 'Atoms/Cell',
     component: Cmp,
     argTypes: {
         children: { control: null },
@@ -11,7 +12,9 @@ export default {
 } as Meta;
 
 const Template: Story<CellProps> = (args) => (
-    <Cmp {...args}/>
+    <ThemeProvider>
+        <Cmp {...args}/>
+    </ThemeProvider>
 );
 
 export const Cell = Template.bind({});

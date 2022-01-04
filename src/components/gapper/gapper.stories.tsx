@@ -1,9 +1,10 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import { Gapper as Cmp, GapperProps } from './gapper';
+import { ThemeProvider } from '../theme-provider';
 
 export default {
-    title: 'B/Gapper',
+    title: 'Elements/Gapper',
     component: Cmp,
     argTypes: {
         children: { control: null },
@@ -11,7 +12,9 @@ export default {
 } as Meta;
 
 const Template: Story<GapperProps> = (args) => (
-    <Cmp {...args}/>
+    <ThemeProvider>
+        <Cmp {...args}/>
+    </ThemeProvider>
 );
 
 export const Gapper = Template.bind({});

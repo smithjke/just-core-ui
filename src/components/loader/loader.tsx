@@ -4,12 +4,10 @@ import { createUseStyles } from 'react-jss';
 export type LoaderProps = {
     size: number;
     color?: string;
-    strokeWidth?: number;
-    radius?: number;
 };
 
 const useStyles = createUseStyles({
-    Loader: (props: LoaderProps) => ({
+    Loader: (props: LoaderProps & { radius: number }) => ({
         display: 'flex',
         width: props.size,
         height: props.size,
@@ -40,12 +38,9 @@ const useStyles = createUseStyles({
         },
     },
     ProgressRing: {},
-    ProgressRing__Circle: (props: LoaderProps) => ({
+    ProgressRing__Circle: (props: LoaderProps & { radius: number }) => ({
         'stroke-dasharray': `${props.radius * 2 * Math.PI} ${props.radius * 2 * Math.PI}`,
         'stroke-dashoffset': props.radius * 2 * Math.PI,
-        // transition: '0.75s stroke-dashoffset',
-        // axis compensation
-        // transform: 'rotate(-90deg)',
         'transform-origin': '50% 50%',
         animation: '$circleAnimation2 2s infinite ease',
     }),
@@ -54,15 +49,15 @@ const useStyles = createUseStyles({
 export function Loader(props: LoaderProps): JSX.Element {
     const {
         size,
-        strokeWidth = size * 0.1,
-        radius = size * 0.5 - strokeWidth - size * 0.1,
         color = 'black',
     } = props;
+
+    const strokeWidth = size * 0.1;
+    const radius = size * 0.5 - strokeWidth - size * 0.1;
 
     const styles = useStyles({
         ...props,
         size,
-        strokeWidth,
         radius,
     });
 
@@ -77,7 +72,7 @@ export function Loader(props: LoaderProps): JSX.Element {
                     className={styles.ProgressRing__Circle}
                     stroke={color}
                     strokeWidth={size * 0.15}
-                    fill="transparent"
+                    fill={'transparent'}
                     r={radius}
                     cx={size * 0.5}
                     cy={size * 0.5}

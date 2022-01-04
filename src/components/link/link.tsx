@@ -1,7 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { ColorService, StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
+import { Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justParamColor, justToBotColor } from '../../utils';
 
 export type LinkProps = {
     onClick?: () => void;
@@ -9,15 +10,11 @@ export type LinkProps = {
     children?: React.ReactNode;
 };
 
-const getLinkPrimaryColor = (theme: Theme) => StyleService.instance.getParamColor(theme, 'LINK_PRIMARY_COLOR');
+const getLinkPrimaryColor = (theme: Theme) => justParamColor(theme, 'LINK_PRIMARY_COLOR');
 
-const getLinkPrimaryColorDisabled = (theme: Theme) => ColorService.instance.calculateOpacity(getLinkPrimaryColor(theme), 0.5);
+const getLinkPrimaryColorDisabled = (theme: Theme) => justToBotColor(theme, { opacity: 0.5 }, getLinkPrimaryColor(theme));
 
-const getLinkPrimaryColorHovered = (theme: Theme) => StyleService.instance.mutateColor(
-    getLinkPrimaryColor(theme),
-    StyleService.instance.getBotColor(theme),
-    { step: 2 },
-);
+const getLinkPrimaryColorHovered = (theme: Theme) => justToBotColor(theme, { step: 2 }, getLinkPrimaryColor(theme));
 
 const useStyles = createUseStyles({
     Link: (props: LinkProps & { theme: Theme }) => ({

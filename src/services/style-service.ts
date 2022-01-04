@@ -1,5 +1,5 @@
-import { RadiusCode, SpaceCode } from '../common';
-import { Theme } from '../state';
+import { Theme } from '../common';
+import { useColorService } from '../di';
 import { ColorService, ColorStep } from './color-service';
 
 export type StyleMutateColorParams = {
@@ -8,7 +8,11 @@ export type StyleMutateColorParams = {
 };
 
 export class StyleService {
-    static readonly instance = new StyleService();
+    private readonly colorService: ColorService;
+
+    constructor() {
+        this.colorService = useColorService();
+    }
 
     mutateColor(baseColor: string, targetColor: string, params: StyleMutateColorParams): string {
         const {
@@ -19,13 +23,13 @@ export class StyleService {
         let color = baseColor;
 
         if (step) {
-            const percent = ColorService.instance.step2percent[step];
+            const percent = this.colorService.step2percent[step];
 
-            color = ColorService.instance.calculateColor(baseColor, targetColor, percent);
+            color = this.colorService.calculateColor(baseColor, targetColor, percent);
         }
 
         if (typeof opacity !== 'undefined') {
-            color = ColorService.instance.calculateOpacity(color, opacity);
+            color = this.colorService.calculateOpacity(color, opacity);
         }
 
         return color;
@@ -43,19 +47,7 @@ export class StyleService {
         return this.getColor(theme, theme.invert ? 'LIGHT' : 'DARK');
     }
 
-    getParamColor(theme: Theme, name: string): string {
-        return this.getColor(theme, this.getParam(theme, name) as string);
-    }
-
     getParam(theme: Theme, name: string): string | number | object {
         return theme.params[name] || null;
-    }
-
-    getRadius(theme: Theme, code: RadiusCode): number {
-        return this.getParam(theme, 'RADIUS')[code];
-    }
-
-    getSpace(theme: Theme, code: SpaceCode): number {
-        return this.getParam(theme, 'SPACE')[code];
     }
 }

@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
-import { StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
-import { colorToTop } from '../../utils';
+import { Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justRadius, justTopColor, justToTopColor } from '../../utils';
 import { Space } from '../space';
 import { Text } from '../text';
 
@@ -19,10 +19,10 @@ export type InputProps = {
 const useStyles = createUseStyles({
     Input: {},
     Input__Input: (props: InputProps & { theme: Theme }) => ({
-        background: StyleService.instance.getTopColor(props.theme),
-        border: `1px solid ${colorToTop(props.theme, 7)}`,
-        borderRadius: StyleService.instance.getRadius(props.theme, 's'),
-        color: colorToTop(props.theme, 2),
+        background: justTopColor(props.theme),
+        border: `1px solid ${justToTopColor(props.theme, 7)}`,
+        borderRadius: justRadius(props.theme, 's'),
+        color: justToTopColor(props.theme, 2),
         boxSizing: 'border-box',
         padding: '9px 8px',
         width: '100%',

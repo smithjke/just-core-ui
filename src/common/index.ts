@@ -1,2 +1,3 @@
-export * from './default-colors';
-export * from './default-params';
+export * from './colors';
+export * from './params';
+export * from './theme';

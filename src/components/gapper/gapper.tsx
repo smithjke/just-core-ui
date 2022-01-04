@@ -4,7 +4,7 @@ import { Space } from '../space';
 
 export type GapperProps = {
     step: SpaceCode;
-    children: React.ReactNodeArray;
+    children: Array<React.ReactNode>;
 };
 
 export function Gapper(props: GapperProps): JSX.Element {

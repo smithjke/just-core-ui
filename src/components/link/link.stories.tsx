@@ -1,18 +1,21 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { Link as Cmp, LinkProps } from './link';
+import { ThemeProvider } from '../theme-provider';
 
 export default {
-    title: 'A/Link',
+    title: 'Atoms/Link',
     component: Cmp,
 } as Meta;
 
 const Template: Story<LinkProps> = (args) => (
-    <Cmp {...args}/>
+    <ThemeProvider>
+        <Cmp {...args}/>
+    </ThemeProvider>
 );
 
 export const Link = Template.bind({});
 
 Link.args = {
-    children: 'Zdarova posony',
+    children: 'Link to...',
 };

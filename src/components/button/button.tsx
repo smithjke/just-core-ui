@@ -1,9 +1,17 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
+import { FontSize, Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import {
+    justColor,
+    justParamColor,
+    justRadius,
+    justSpace,
+    justToBotColor,
+    justToTopColor,
+} from '../../utils';
 import { Loader } from '../loader';
-import { FontSize, Text } from '../text';
+import { Text } from '../text';
 
 export type ButtonPropsType = 'primary' | 'secondary';
 
@@ -33,18 +41,18 @@ type ButtonConfig = {
 const getButtonConfig = (props: ButtonProps, theme: Theme): ButtonConfig => {
     const size2params: Record<ButtonPropsSize, ButtonConfig> = {
         's': {
-            padding: `7px ${StyleService.instance.getSpace(theme, 'xs')}px`,
-            borderRadius: StyleService.instance.getRadius(theme, 's'),
+            padding: `7px ${justSpace(theme, 'xs')}px`,
+            borderRadius: justRadius(theme, 's'),
             textSize: 's',
         },
         'm': {
-            padding: `${StyleService.instance.getSpace(theme, 'xs')}px ${StyleService.instance.getSpace(theme, 'm')}px`,
-            borderRadius: StyleService.instance.getRadius(theme, 's'),
+            padding: `${justSpace(theme, 'xs')}px ${justSpace(theme, 'm')}px`,
+            borderRadius: justRadius(theme, 's'),
             textSize: 'm',
         },
         'l': {
-            padding: `${StyleService.instance.getSpace(theme, 's')}px ${StyleService.instance.getSpace(theme, 'l')}px`,
-            borderRadius: StyleService.instance.getRadius(theme, 'm'),
+            padding: `${justSpace(theme, 's')}px ${justSpace(theme, 'l')}px`,
+            borderRadius: justRadius(theme, 'm'),
             textSize: 'm',
         },
     };
@@ -52,19 +60,11 @@ const getButtonConfig = (props: ButtonProps, theme: Theme): ButtonConfig => {
     return size2params[props.size];
 };
 
-const getButtonColor = (props: ButtonProps, theme: Theme) => StyleService.instance.getParamColor(theme, type2paramName[props.type]);
+const getButtonColor = (props: ButtonProps, theme: Theme) => justParamColor(theme, type2paramName[props.type]);
 
-const getButtonDisabledColor = (props: ButtonProps, theme: Theme) => StyleService.instance.mutateColor(
-    StyleService.instance.getBotColor(theme),
-    StyleService.instance.getTopColor(theme),
-    { step: 6 },
-);
+const getButtonDisabledColor = (props: ButtonProps, theme: Theme) => justToTopColor(theme, { step: 6 });
 
-const getButtonHoveredColor = (props: ButtonProps, theme: Theme) => StyleService.instance.mutateColor(
-    getButtonColor(props, theme),
-    StyleService.instance.getBotColor(theme),
-    { step: 2 },
-);
+const getButtonHoveredColor = (props: ButtonProps, theme: Theme) => justToBotColor(theme, { step: 2 }, getButtonColor(props, theme));
 
 const useStyles = createUseStyles({
     Button: (props: ButtonProps & { theme: Theme }) => ({
@@ -105,7 +105,7 @@ const useStyles = createUseStyles({
 
 export function Button(props: ButtonProps): JSX.Element {
     const theme = useTheme();
-    const colorLight = StyleService.instance.getColor(theme, 'LIGHT');
+    const colorLight = justColor(theme, 'LIGHT');
 
     const {
         type = 'primary',

@@ -1,21 +1,11 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { RadiusCode } from '../../common';
-import { StyleService } from '../../services';
-import { Theme, useTheme } from '../../state';
-
-export type AvatarPropsSize = 'xs' | 's' | 'm' | 'l' | 'xl';
-
-export const avatarPropsSize2pixel: Record<AvatarPropsSize, number> = {
-    'xs': 28,
-    's': 32,
-    'm': 40,
-    'l': 56,
-    'xl': 64,
-};
+import { AvatarCode, RadiusCode, Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justParam, justRadius, justToTopColor } from '../../utils';
 
 export type AvatarProps = {
-    size: AvatarPropsSize;
+    size: AvatarCode;
     borderRadius?: RadiusCode;
     color?: string;
     children?: React.ReactNode;
@@ -23,19 +13,15 @@ export type AvatarProps = {
 
 const useStyles = createUseStyles({
     Avatar: (props: AvatarProps & { theme: Theme }) => ({
-        width: avatarPropsSize2pixel[props.size],
-        height: avatarPropsSize2pixel[props.size],
+        width: justParam(props.theme, 'AVATAR')[props.size],
+        height: justParam(props.theme, 'AVATAR')[props.size],
         borderRadius: typeof props.borderRadius === 'undefined'
-            ? avatarPropsSize2pixel[props.size]
-            : StyleService.instance.getRadius(props.theme, props.borderRadius),
+            ? justParam(props.theme, 'AVATAR')[props.size]
+            : justRadius(props.theme, props.borderRadius),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: props.color || StyleService.instance.mutateColor(
-            StyleService.instance.getBotColor(props.theme),
-            StyleService.instance.getTopColor(props.theme),
-            { step: 7 },
-        ),
+        backgroundColor: props.color || justToTopColor(props.theme, { step: 7 }),
     }),
 });
 

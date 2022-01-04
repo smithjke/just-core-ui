@@ -1,58 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { Theme, useTheme } from '../../state';
-import { colorToTop } from '../../utils';
-
-// FONT SIZE
-
-export type FontSize = '2xs' | 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | '3xl' | '4xl';
-
-// FLOOR(1.125 Major Second)
-export const FontSizeMobile: Record<FontSize, number> = {
-    '2xs': 11,
-    'xs': 12,
-    's': 14,
-    'm': 16,
-    'l': 18,
-    'xl': 20,
-    '2xl': 22,
-    '3xl': 25,
-    '4xl': 28,
-};
-
-// CEIL(1.200 Minor Third)
-export const FontSizeDesktop: Record<FontSize, number> = {
-    '2xs': 10,
-    'xs': 12,
-    's': 14,
-    'm': 16,
-    'l': 20,
-    'xl': 24,
-    '2xl': 28,
-    '3xl': 34,
-    '4xl': 40,
-};
-
-// LINE HEIGHT
-
-export type LineHeight = 's' | 'm' | 'l';
-
-export const LineHeightBase: Record<LineHeight, number> = {
-    's': 1,
-    'm': 1.2,
-    'l': 1.3,
-};
-
-// FONT WEIGHT
-
-export type FontWeight = 'regular' | 'medium' | 'semi-bold' | 'bold';
-
-export const FontWeightBase: Record<FontWeight, number> = {
-    'regular': 400,
-    'medium': 500,
-    'semi-bold': 600,
-    'bold': 700,
-};
+import { FontSize, FontWeight, LineHeight, Theme } from '../../common';
+import { useTheme } from '../../hooks';
+import { justParam, justToTopColor } from '../../utils';
 
 export type TextProps = {
     size?: FontSize;
@@ -67,13 +17,13 @@ export type TextProps = {
 const useStyles = createUseStyles({
     Text: (props: TextProps & { theme: Theme }) =>  ({
         fontFamily: 'Inter, sans-serif',
-        fontSize: FontSizeDesktop[props.size],
-        fontWeight: FontWeightBase[props.weight],
-        lineHeight: LineHeightBase[props.height],
+        fontSize: justParam(props.theme, 'FONT_SIZE_DESKTOP')[props.size],
+        fontWeight: justParam(props.theme, 'FONT_WEIGHT')[props.weight],
+        lineHeight: justParam(props.theme, 'LINE_HEIGHT')[props.height],
         textAlign: props.align,
         color: props.color,
         '@media (max-width: 400px)': {
-            fontSize: FontSizeMobile[props.size],
+            fontSize: justParam(props.theme, 'FONT_SIZE_MOBILE')[props.size],
         },
     }),
 });
@@ -82,7 +32,7 @@ export function Text(props: TextProps): JSX.Element {
     const theme = useTheme();
 
     const {
-        color = colorToTop(theme, 1),
+        color = justToTopColor(theme, 1),
         size = 'm',
         height = 'm',
         weight = 'regular',
